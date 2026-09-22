@@ -40,7 +40,7 @@ export function FotoTopo({
       <div className="relative mx-auto aspect-square w-full max-w-3xl sm:max-w-4xl">
         <div
           ref={fotoRef}
-          className="absolute inset-0 scale-110 will-change-transform"
+          className="absolute inset-0 will-change-transform"
         >
           <Image
             src={imagemUrl}
