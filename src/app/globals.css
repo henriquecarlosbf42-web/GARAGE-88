@@ -20,6 +20,19 @@
   --font-body: var(--font-body);
 }
 
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3 {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
