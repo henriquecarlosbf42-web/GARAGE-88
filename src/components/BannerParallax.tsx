@@ -3,11 +3,6 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
-// Deslocamento maximo do efeito -- pequeno de propósito, pra imagem
-// assentar rápido (só enquanto ela está entrando na tela, não a rolagem
-// da página inteira) e o lanche ficar em evidência logo.
-const DESLOCAMENTO_MAX = 32;
-
 export function BannerParallax({
   imagemUrl,
   alt,
@@ -21,16 +16,10 @@ export function BannerParallax({
     let ticking = false;
 
     function aplicarParallax() {
-      const el = fotoRef.current;
-      const secao = el?.closest("section");
-      if (el && secao) {
-        const rect = secao.getBoundingClientRect();
-        const alturaTela = window.innerHeight;
-        // progresso: 0 quando a seção está entrando pela base da tela,
-        // 1 quando o topo dela já chegou no topo da tela.
-        const progresso = Math.max(0, Math.min(1, (alturaTela - rect.top) / alturaTela));
-        const deslocamento = (1 - progresso) * DESLOCAMENTO_MAX;
-        el.style.transform = `translateY(${deslocamento}px)`;
+      if (fotoRef.current) {
+        const secao = fotoRef.current.closest("section");
+        const topo = secao?.getBoundingClientRect().top ?? 0;
+        fotoRef.current.style.transform = `translateY(${topo * -0.15}px)`;
       }
       ticking = false;
     }
@@ -44,24 +33,22 @@ export function BannerParallax({
 
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <section className="w-full overflow-hidden bg-background py-10">
-      <div ref={fotoRef} className="will-change-transform">
-        <Image
-          src={imagemUrl}
-          alt={alt}
-          width={1677}
-          height={938}
-          className="h-auto w-full"
-        />
+    <section className="relative w-full overflow-hidden bg-surface">
+      <div className="relative mx-auto aspect-[1677/938] w-full">
+        <div ref={fotoRef} className="absolute inset-0 will-change-transform">
+          <Image
+            src={imagemUrl}
+            alt={alt}
+            fill
+            className="object-contain"
+          />
+        </div>
       </div>
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
     </section>
   );
 }
