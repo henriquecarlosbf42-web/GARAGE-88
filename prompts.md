@@ -65,6 +65,14 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [x] Preencher `.env.local` com URL + anon key do projeto Supabase real
 - [x] Rodar `supabase/schema.sql` no projeto Supabase (tabela confirmada via API)
 - [x] Criar usuário da equipe em Authentication → Users no Supabase (login testado com sucesso)
+- [x] Faixa decorativa pixelada (azul/vermelho/branco, feita só com CSS,
+      sem imagem/personagem de jogo nenhum) logo abaixo da foto do topo —
+      detalhe pontual "retro/8-bit", sem mudar a identidade P&B do resto
+      do site. IMPORTANTE: cliente pediu pra usar Mario/Sonic/Donkey
+      Kong/KOF de verdade — recusei por violação de direito autoral/marca
+      registrada (personagens da Nintendo/SEGA/SNK), expliquei que isso
+      vale mesmo se ele mandar as fotos, e ele topou a alternativa de
+      estética pixel art original + cores (cor sozinha não é protegida)
 - [x] Foto real da equipe no topo do site (seção nova, antes do Hero), com
       efeito parallax por scroll (a foto se move mais devagar que a rolagem
       da página — funciona em mobile e desktop, diferente do parallax por

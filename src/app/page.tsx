@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { FotoTopo } from "@/components/FotoTopo";
+import { FaixaPixelada } from "@/components/FaixaPixelada";
 import { Hero } from "@/components/Hero";
 import { Cardapio } from "@/components/Cardapio";
 import { Sobre } from "@/components/Sobre";
@@ -16,6 +17,7 @@ export default function Home() {
           imagemUrl="/images/equipe-garage88.png"
           alt="Equipe da Garage 88 segurando hambúrgueres artesanais"
         />
+        <FaixaPixelada />
         <Hero />
         <Cardapio />
         <Sobre />
