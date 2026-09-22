@@ -65,6 +65,14 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [x] Preencher `.env.local` com URL + anon key do projeto Supabase real
 - [x] Rodar `supabase/schema.sql` no projeto Supabase (tabela confirmada via API)
 - [x] Criar usuário da equipe em Authentication → Users no Supabase (login testado com sucesso)
+- [x] Cardápio do site com cards animados (framer-motion): foto do produto
+      com zoom suave no hover, fade-in ao entrar na tela, botão "Pedir"
+      que aparece por cima da foto — baseado num componente que o cliente
+      mandou (adaptado: tirei selo vegetariano, "preço original"/desconto
+      falso e tempo de preparo, porque não existem no nosso cardápio de
+      verdade — usei só nome, ingredientes, preço e foto reais). Componente
+      em `src/components/ui/menu-item-card.tsx` (convenção shadcn: pasta
+      `components/ui`, `cn()` em `src/lib/utils.ts`)
 - [x] Fluxo de escaneamento do motoboy melhorado: tela de confirmação com
       check + "Escanear outro pedido" (em vez de só um aviso piscando);
       fila mostra horário, endereço, forma de pagamento e se está pago;

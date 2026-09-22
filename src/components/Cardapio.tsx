@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Categoria, Produto } from "@/lib/produtos";
+import { MenuItemCard } from "@/components/ui/menu-item-card";
 
 export async function Cardapio() {
   const supabase = await createClient();
@@ -48,7 +49,14 @@ export async function Cardapio() {
                 </h3>
                 <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {produtos.map((produto) => (
-                    <ProdutoCard key={produto.id} produto={produto} />
+                    <MenuItemCard
+                      key={produto.id}
+                      imageUrl={produto.imagem_url}
+                      name={produto.nome}
+                      description={produto.ingredientes || produto.descricao}
+                      price={produto.preco}
+                      hrefPedir="/pedir"
+                    />
                   ))}
                 </div>
               </div>
@@ -58,7 +66,14 @@ export async function Cardapio() {
             <div>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {semCategoria.map((produto) => (
-                  <ProdutoCard key={produto.id} produto={produto} />
+                  <MenuItemCard
+                    key={produto.id}
+                    imageUrl={produto.imagem_url}
+                    name={produto.nome}
+                    description={produto.ingredientes || produto.descricao}
+                    price={produto.preco}
+                    hrefPedir="/pedir"
+                  />
                 ))}
               </div>
             </div>
@@ -66,35 +81,5 @@ export async function Cardapio() {
         </div>
       </div>
     </section>
-  );
-}
-
-function ProdutoCard({ produto }: { produto: Produto }) {
-  return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-background/60">
-      {produto.imagem_url && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={produto.imagem_url}
-          alt={produto.nome}
-          className="h-40 w-full object-cover"
-        />
-      )}
-      <div className="p-6">
-        <h4 className="font-heading text-2xl uppercase tracking-wide">
-          {produto.nome}
-        </h4>
-        {(produto.ingredientes || produto.descricao) && (
-          <p className="mt-2 text-sm text-muted">
-            {produto.ingredientes || produto.descricao}
-          </p>
-        )}
-        {produto.preco != null && (
-          <p className="mt-4 font-semibold text-accent-2">
-            R$ {produto.preco.toFixed(2)}
-          </p>
-        )}
-      </div>
-    </div>
   );
 }
