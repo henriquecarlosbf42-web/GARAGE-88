@@ -47,7 +47,7 @@ export function QrScanner({
         (decodedText) => {
           if (pausadoRef.current) return;
           pausadoRef.current = true;
-          onScan(decodedText);
+          onScan(decodedText.trim());
           setTimeout(() => {
             pausadoRef.current = false;
           }, 1500);

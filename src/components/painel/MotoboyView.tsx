@@ -12,6 +12,7 @@ import {
   linkRotaGoogleMaps,
 } from "@/lib/pedidos";
 import { QrScanner } from "@/components/painel/QrScanner";
+import { tocarBipe } from "@/lib/bipe";
 
 type Aviso = { tipo: "sucesso" | "erro" | "info"; texto: string };
 
@@ -105,6 +106,7 @@ export function MotoboyView({
         ? prev.map((p) => (p.id === claimado.id ? claimado : p))
         : [...prev, claimado];
     });
+    tocarBipe();
     setScanner({ tipo: "confirmado_pegar", pedido: claimado });
   }
 
@@ -124,6 +126,7 @@ export function MotoboyView({
     const supabase = createClient();
     await supabase.from("pedidos").update({ status: "concluido" }).eq("id", alvo.id);
 
+    tocarBipe();
     setScanner({ tipo: "fechado" });
     setAviso({ tipo: "sucesso", texto: `Pedido de ${alvo.cliente_nome} entregue!` });
   }
@@ -413,7 +416,7 @@ function ConfirmacaoScan({
         ✓
       </span>
       <h2 className="mt-4 font-heading text-2xl uppercase tracking-wide">
-        Pedido escaneado!
+        Pedido coletado!
       </h2>
       <p className="mt-2 font-semibold">{pedido.cliente_nome}</p>
       <p className="text-sm text-muted">{pedido.itens}</p>
@@ -425,7 +428,7 @@ function ConfirmacaoScan({
         onClick={onEscanearOutro}
         className="mt-8 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-background transition hover:bg-accent-2"
       >
-        Escanear outro pedido
+        Coletar outro pedido
       </button>
       <button
         onClick={onFechar}
