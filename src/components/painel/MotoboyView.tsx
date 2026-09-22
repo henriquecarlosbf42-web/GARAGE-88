@@ -70,7 +70,8 @@ export function MotoboyView({
     if (erroBusca || !pedido) {
       setAviso({
         tipo: "erro",
-        texto: "Pedido não encontrado ou já foi pego por outro motoboy.",
+        texto:
+          "Não consegui pegar esse pedido. Ou ele ainda não está \"Em preparo\" no painel, ou já foi pego por outro motoboy, ou o QR não é de um pedido válido.",
       });
       return;
     }
