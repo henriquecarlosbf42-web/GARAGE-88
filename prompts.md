@@ -68,6 +68,14 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [~] Fonte dos títulos: testamos Cinzel Decorative (Google Fonts, mais
       elegante/clássica), cliente não gostou do resultado — voltou pra
       Bebas Neue. Segue provisória, aguardando outra sugestão de fonte
+- [x] Home renderiza no mobile na proporção do desktop encolhida (viewport
+      fixo em 1024px, só na home) — cliente pediu explicitamente, ciente
+      que texto/botões ficam menores e mais difíceis de tocar sem zoom.
+      `/cardapio` e `/painel` continuam responsivos normais (formulário,
+      carrinho e scanner de QR precisam ficar tocáveis)
+- [x] Cards de produto (MenuItemCard, usado em "Destaques") com efeito de
+      profundidade: a foto "flutua" pra fora do topo do card com sombra,
+      em vez de ficar contida/cortada dentro dele
 - [x] Reformulação completa da landing page seguindo prompt/mockup enviado
       pelo cliente (estrutura tipo "página que já é o site/cardápio"):
       Header com nav completa + WhatsApp (scroll shrink), Hero com dois

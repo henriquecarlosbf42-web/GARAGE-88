@@ -1,3 +1,4 @@
+import type { Viewport } from "next";
 import { Header } from "@/components/Header";
 import { FotoRecorteParallax } from "@/components/FotoRecorteParallax";
 import { Hero } from "@/components/Hero";
@@ -17,6 +18,10 @@ import { FachadaParallax } from "@/components/FachadaParallax";
 import { CtaFinal } from "@/components/CtaFinal";
 import { Footer } from "@/components/Footer";
 import { BotoesFlutuantes } from "@/components/BotoesFlutuantes";
+
+export const viewport: Viewport = {
+  width: 1024,
+};
 
 export default function Home() {
   return (

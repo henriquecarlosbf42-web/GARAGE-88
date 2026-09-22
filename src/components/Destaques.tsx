@@ -29,7 +29,7 @@ export async function Destaques() {
         {destaques.length === 0 ? (
           <p className="mt-10 text-muted">Cardápio em atualização — volte em breve.</p>
         ) : (
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-16 grid gap-x-6 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
             {destaques.map((produto) => (
               <MenuItemCard
                 key={produto.id}
