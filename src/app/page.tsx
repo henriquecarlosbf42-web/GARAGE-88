@@ -3,17 +3,17 @@ import { FotoRecorteParallax } from "@/components/FotoRecorteParallax";
 import { Hero } from "@/components/Hero";
 import { Cardapio } from "@/components/Cardapio";
 import { Sobre } from "@/components/Sobre";
+import { Eventos } from "@/components/Eventos";
 import { Localizacao } from "@/components/Localizacao";
 import { FachadaParallax } from "@/components/FachadaParallax";
 import { BannerParallax } from "@/components/BannerParallax";
 import { Contato } from "@/components/Contato";
-import { StickyCTA } from "@/components/StickyCTA";
 
 export default function Home() {
   return (
     <>
       <Header />
-      <main className="flex-1 pb-20 sm:pb-0">
+      <main className="flex-1">
         <FotoRecorteParallax
           imagemUrl="/images/equipe-garage88.png"
           alt="Equipe da Garage 88 segurando hambúrgueres artesanais"
@@ -26,6 +26,7 @@ export default function Home() {
         />
         <Cardapio />
         <Sobre />
+        <Eventos />
         <Localizacao />
         <FachadaParallax
           imagemUrl="/images/fachada-garage88.png"
@@ -33,7 +34,6 @@ export default function Home() {
         />
         <Contato />
       </main>
-      <StickyCTA />
     </>
   );
 }

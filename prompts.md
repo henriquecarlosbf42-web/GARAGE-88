@@ -68,6 +68,12 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [~] Fonte dos títulos: testamos Cinzel Decorative (Google Fonts, mais
       elegante/clássica), cliente não gostou do resultado — voltou pra
       Bebas Neue. Segue provisória, aguardando outra sugestão de fonte
+- [x] Seção "Aniversário e confraternização" na home (entre Sobre e
+      Localização) — cliente avisou que o espaço também é reservado pra
+      eventos. CTA "Reservar espaço" leva pro Contato (ainda com
+      WhatsApp/email placeholder, ver pendências)
+- [x] Removido o botão fixo "Pedir agora" do rodapé mobile (StickyCTA) —
+      cliente pediu pra tirar
 - [x] Cardápio isolado da home: `/pedir` virou `/cardapio` (redirect em
       `/pedir` pra não quebrar link antigo). A home mostra só 3 produtos
       em destaque + botão "Ver cardápio completo e pedir". Clicar num
