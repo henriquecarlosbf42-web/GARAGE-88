@@ -108,6 +108,12 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
       enviado pelo cliente), clicável (link pra `/cardapio`) com animação
       de pulsar suave. `public/images/delivery-sem-taxa.png`
 - [x] Seção "Sobre" renomeada pra "Conhecendo o Garage88"
+- [x] Tela de login do painel: fundo com arte enviada pelo cliente
+      (`public/images/login-bg.png`) + seletor "Atendente"/"Entregador".
+      O seletor é só um atalho de UX (pré-seleciona pra onde tentar ir
+      depois do login) — o papel de verdade continua vindo do cadastro
+      da conta (`profiles.role`); se a pessoa escolher a opção errada,
+      o painel corrige sozinho (já tinha esse redirect por papel)
 - [x] Botão discreto "Acessar Painel" no rodapé da home, linkando pra
       `/painel` (login)
 - [x] Cardápio removido de vez da home (nem o teaser de 3 produtos ficou)
