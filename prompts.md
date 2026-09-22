@@ -68,6 +68,10 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [~] Fonte dos títulos: testamos Cinzel Decorative (Google Fonts, mais
       elegante/clássica), cliente não gostou do resultado — voltou pra
       Bebas Neue. Segue provisória, aguardando outra sugestão de fonte
+- [x] Botão discreto "Acessar Painel" no rodapé da home, linkando pra
+      `/painel` (login)
+- [x] Cardápio removido de vez da home (nem o teaser de 3 produtos ficou)
+      — navegação e "pedir agora" apontam direto pra `/cardapio`
 - [x] Seção "Aniversário e confraternização" na home (entre Sobre e
       Localização) — cliente avisou que o espaço também é reservado pra
       eventos. CTA "Reservar espaço" leva pro Contato (ainda com

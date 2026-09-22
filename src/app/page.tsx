@@ -1,7 +1,6 @@
 import { Header } from "@/components/Header";
 import { FotoRecorteParallax } from "@/components/FotoRecorteParallax";
 import { Hero } from "@/components/Hero";
-import { Cardapio } from "@/components/Cardapio";
 import { Sobre } from "@/components/Sobre";
 import { Eventos } from "@/components/Eventos";
 import { Localizacao } from "@/components/Localizacao";
@@ -25,7 +24,6 @@ export default function Home() {
           imagemUrl="/images/burger-carro-chefe.png"
           alt="Maverick, o hambúrguer carro-chefe da Garage 88"
         />
-        <Cardapio />
         <Sobre />
         <Eventos />
         <Localizacao />
