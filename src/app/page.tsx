@@ -4,7 +4,7 @@ import { Cardapio } from "@/components/Cardapio";
 import { Sobre } from "@/components/Sobre";
 import { Localizacao } from "@/components/Localizacao";
 import { Contato } from "@/components/Contato";
-import { PedirAgora, StickyCTA } from "@/components/PedirAgora";
+import { StickyCTA } from "@/components/StickyCTA";
 
 export default function Home() {
   return (
@@ -14,7 +14,6 @@ export default function Home() {
         <Hero />
         <Cardapio />
         <Sobre />
-        <PedirAgora />
         <Localizacao />
         <Contato />
       </main>

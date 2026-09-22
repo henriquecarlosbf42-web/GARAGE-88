@@ -23,7 +23,7 @@ export function Header() {
         </nav>
         <Link
           href="/pedir"
-          className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-background transition hover:bg-accent-2"
+          className="hidden rounded-full bg-accent px-4 py-2 text-sm font-semibold text-background transition hover:bg-accent-2 sm:inline-block"
         >
           Pedir agora
         </Link>

@@ -12,18 +12,12 @@ export function Hero() {
           Ingredientes selecionados, receita própria, grelha lenta. A Garage
           88 é pra quem não abre mão de qualidade em cada mordida.
         </p>
-        <div className="mt-8 flex flex-wrap gap-4">
+        <div className="mt-8">
           <a
             href="#cardapio"
-            className="rounded-full border border-white/20 px-6 py-3 text-sm font-semibold transition hover:border-white/40"
+            className="inline-block rounded-full border border-white/20 px-6 py-3 text-sm font-semibold transition hover:border-white/40"
           >
             Ver cardápio
-          </a>
-          <a
-            href="/pedir"
-            className="rounded-full bg-accent px-6 py-3 text-sm font-semibold text-background transition hover:bg-accent-2"
-          >
-            Pedir agora
           </a>
         </div>
       </div>
