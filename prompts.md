@@ -65,6 +65,10 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [x] Preencher `.env.local` com URL + anon key do projeto Supabase real
 - [x] Rodar `supabase/schema.sql` no projeto Supabase (tabela confirmada via API)
 - [x] Criar usuário da equipe em Authentication → Users no Supabase (login testado com sucesso)
+- [x] Fonte definitiva dos títulos: Cinzel Decorative (Google Fonts) —
+      trocou a Bebas Neue provisória. Mais elegante/clássica do que a
+      pegada "garagem industrial" anterior; cliente confirmou a troca
+      ciente da mudança de personalidade visual
 - [x] Jornada parallax de página inteira: foto do casal (topo) → Hero →
       foto do lanche carro-chefe (parallax) → Cardápio/Sobre/Localização →
       foto real da fachada à noite com fusca (parallax, fundo cheio) →

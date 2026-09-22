@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Inter } from "next/font/google";
+import { Cinzel_Decorative, Inter } from "next/font/google";
 import "./globals.css";
 
-const bebasNeue = Bebas_Neue({
+const cinzelDecorative = Cinzel_Decorative({
   variable: "--font-heading",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["700", "900"],
 });
 
 const inter = Inter({
@@ -23,7 +23,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pt-BR"
-      className={`${bebasNeue.variable} ${inter.variable} h-full antialiased`}
+      className={`${cinzelDecorative.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-body">
         {children}
