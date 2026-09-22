@@ -5,6 +5,7 @@ import { Cardapio } from "@/components/Cardapio";
 import { Sobre } from "@/components/Sobre";
 import { Localizacao } from "@/components/Localizacao";
 import { FachadaParallax } from "@/components/FachadaParallax";
+import { BannerParallax } from "@/components/BannerParallax";
 import { Contato } from "@/components/Contato";
 import { StickyCTA } from "@/components/StickyCTA";
 
@@ -19,9 +20,9 @@ export default function Home() {
           prioridade
         />
         <Hero />
-        <FotoRecorteParallax
+        <BannerParallax
           imagemUrl="/images/burger-carro-chefe.png"
-          alt="Hambúrguer carro-chefe da Garage 88, com queijo derretido e bacon"
+          alt="Maverick, o hambúrguer carro-chefe da Garage 88"
         />
         <Cardapio />
         <Sobre />
