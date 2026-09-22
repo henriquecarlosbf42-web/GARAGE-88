@@ -1,7 +1,7 @@
 export function Hero() {
   return (
-    <section className="mx-auto max-w-5xl px-6 pb-16 pt-14 sm:pt-20">
-      <div className="max-w-2xl">
+    <section className="mx-auto max-w-5xl px-6 pb-16 pt-14 text-center sm:pt-20">
+      <div className="mx-auto max-w-2xl">
         <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-accent-2">
           São José dos Campos
         </p>
@@ -12,7 +12,7 @@ export function Hero() {
           Ingredientes selecionados, receita própria, grelha lenta. A Garage
           88 é pra quem não abre mão de qualidade em cada mordida.
         </p>
-        <div className="mt-8">
+        <div className="mt-8 flex justify-center">
           <a
             href="#cardapio"
             className="inline-block rounded-full border border-white/20 px-6 py-3 text-sm font-semibold transition hover:border-white/40"

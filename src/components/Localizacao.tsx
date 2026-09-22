@@ -4,11 +4,11 @@ export function Localizacao() {
       id="localizacao"
       className="border-t border-white/10 bg-surface"
     >
-      <div className="mx-auto max-w-5xl px-6 py-16">
+      <div className="mx-auto max-w-5xl px-6 py-16 text-center">
         <h2 className="font-heading text-4xl uppercase tracking-wide sm:text-5xl">
           Localização e horário
         </h2>
-        <div className="mt-6 grid gap-8 sm:grid-cols-2">
+        <div className="mx-auto mt-6 grid max-w-3xl gap-8 sm:grid-cols-2">
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-widest text-accent-2">
               Endereço

@@ -26,11 +26,11 @@ export async function Cardapio() {
 
   return (
     <section id="cardapio" className="border-t border-white/10 bg-surface">
-      <div className="mx-auto max-w-5xl px-6 py-16">
+      <div className="mx-auto max-w-5xl px-6 py-16 text-center">
         <h2 className="font-heading text-4xl uppercase tracking-wide sm:text-5xl">
           Cardápio
         </h2>
-        <p className="mt-3 max-w-xl text-muted">
+        <p className="mx-auto mt-3 max-w-xl text-muted">
           Cada hambúrguer da Garage 88 é montado na hora, com ingredientes
           que a gente escolhe a dedo.
         </p>

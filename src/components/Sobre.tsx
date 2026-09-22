@@ -1,7 +1,7 @@
 export function Sobre() {
   return (
-    <section id="sobre" className="mx-auto max-w-5xl px-6 py-16">
-      <div className="max-w-2xl">
+    <section id="sobre" className="mx-auto max-w-5xl px-6 py-16 text-center">
+      <div className="mx-auto max-w-2xl">
         <h2 className="font-heading text-4xl uppercase tracking-wide sm:text-5xl">
           Sobre
         </h2>
