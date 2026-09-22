@@ -67,6 +67,13 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [x] Criar usuário da equipe em Authentication → Users no Supabase (login testado com sucesso)
 - [ ] Definir fluxo real de "Pedir agora" (form próprio vs. integração
       delivery/WhatsApp) — hoje é só um placeholder de CTA
+- [x] Pedido fictício criado no banco pra teste (visível no painel)
+- [~] IMPORTANTE (achado durante o teste): inserts feitos pelo `anon` (site
+      público) precisam usar `Prefer: return=minimal` / não encadear
+      `.select()` no supabase-js — pedir o registro de volta (`RETURNING`)
+      falha por RLS, porque `anon` não tem política de SELECT na tabela
+      `pedidos`. Isso vai importar quando construirmos o form real de
+      pedido e o rastreamento pro cliente (próxima etapa combinada)
 
 ---
 
@@ -80,4 +87,4 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [x] Etapa 4 — Desenvolvimento (Next.js + Tailwind + Supabase, build passando; ver detalhes técnicos abaixo)
 - [~] Etapa 5 — Conteúdo real (parcial: cardápio com nomes reais, horário real; endereço, whatsapp, descrições/preços e fotos ainda pendentes — cliente vai mandar depois)
 - [ ] Etapa 6 — Contato/ação final
-- [ ] Etapa 7 — Deploy
+- [x] Etapa 7 — Deploy (no ar em https://garage-88.vercel.app, repo em github.com/henriquecarlosbf42-web/GARAGE-88)

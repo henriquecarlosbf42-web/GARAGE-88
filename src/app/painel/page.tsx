@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { SairButton } from "@/components/painel/SairButton";
 import { PedidosTable, type Pedido } from "@/components/painel/PedidosTable";
@@ -17,7 +18,15 @@ export default async function PainelPage() {
         <h1 className="font-heading text-3xl uppercase tracking-wide">
           Pedidos — Garage 88
         </h1>
-        <SairButton />
+        <div className="flex items-center gap-3">
+          <Link
+            href="/painel/novo"
+            className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-background transition hover:bg-accent-2"
+          >
+            Novo pedido
+          </Link>
+          <SairButton />
+        </div>
       </div>
       <PedidosTable pedidosIniciais={pedidos ?? []} />
     </main>
