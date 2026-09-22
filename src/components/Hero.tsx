@@ -15,7 +15,7 @@ export function Hero() {
         <div className="mt-8 flex justify-center">
           <a
             href="/cardapio"
-            className="inline-block rounded-full border border-white/20 px-6 py-3 text-sm font-semibold transition hover:border-white/40"
+            className="inline-block rounded-full bg-accent px-10 py-4 text-base font-bold uppercase tracking-wide text-background shadow-lg shadow-accent/20 transition hover:bg-accent-2"
           >
             Ver cardápio
           </a>
