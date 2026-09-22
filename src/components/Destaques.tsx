@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import type { Produto } from "@/lib/produtos";
-import { CarouselDestaques } from "@/components/ui/carousel-destaques";
+import { FeatureCarousel } from "@/components/ui/feature-carousel";
 
 export async function Destaques() {
   const supabase = await createClient();
@@ -29,21 +29,22 @@ export async function Destaques() {
         {destaques.length === 0 ? (
           <p className="mt-10 text-muted">Cardápio em atualização — volte em breve.</p>
         ) : (
-          <CarouselDestaques
-            hrefPedir="/cardapio"
-            produtos={destaques.map((produto) => ({
-              id: produto.id,
-              imagem: produto.imagem_url,
-              nome: produto.nome,
-              descricao: produto.ingredientes || produto.descricao,
-              preco: produto.preco,
-            }))}
-          />
+          <div className="mt-10">
+            <FeatureCarousel
+              hrefPedir="/cardapio"
+              produtos={destaques.map((produto) => ({
+                id: produto.id,
+                imagem: produto.imagem_url,
+                nome: produto.nome,
+                ingredientes: produto.ingredientes || produto.descricao,
+              }))}
+            />
+          </div>
         )}
 
         <Link
           href="/cardapio"
-          className="mt-6 inline-block rounded-full border border-white/20 px-8 py-3 font-semibold transition hover:border-white/40"
+          className="mt-10 inline-block rounded-full border border-white/20 px-8 py-3 font-semibold transition hover:border-white/40"
         >
           Ver todo o cardápio →
         </Link>

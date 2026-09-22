@@ -73,13 +73,16 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
       que texto/botões ficam menores e mais difíceis de tocar sem zoom.
       `/cardapio` e `/painel` continuam responsivos normais (formulário,
       carrinho e scanner de QR precisam ficar tocáveis)
-- [x] Seção "Destaques" virou um carrossel de cards empilhados e
-      arrastáveis (drag/inércia com `motion`), adaptado de um componente
-      de referência — trocadas as fotos de exemplo (paisagens) pelos
-      produtos reais do Supabase, preço como selo, botão "Pedir" no
-      card. Componentes novos: `components/ui/carousel-destaques.tsx`,
-      `components/ui/badge.tsx` (shadcn, cores ajustadas pra nossa
-      paleta P&B)
+- [x] Seção "Destaques": depois de testar um carrossel de cards
+      arrastáveis (drag), trocado por um segundo componente de referência
+      — `FeatureCarousel` (`components/ui/feature-carousel.tsx`): lista
+      de nomes rolando à esquerda + foto grande em destaque à direita
+      (com prev/next em preto e branco/desfocado), ingredientes aparecem
+      embaixo da foto ativa. Funciona bem com poucos produtos (não
+      precisa de 5 fixos, cicla naturalmente). Ícones da lib de
+      referência (hugeicons) trocados por nada extra — não instalei
+      lib de ícone nova, só texto no lugar. Removidos os componentes
+      anteriores (carousel-destaques.tsx, badge.tsx) por ficarem sem uso
 - [x] Cards de produto (MenuItemCard, usado em "Destaques" antes do
       carrossel — removido, sem uso depois da troca) com efeito de
       profundidade: a foto "flutua" pra fora do topo do card com sombra,
