@@ -79,6 +79,14 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
       "Ver QR" por pedido (gera QR com qrcode.react em `/painel/pedido/[id]/qr`,
       pronto pra imprimir e colar no saco/ticket)
 - [x] Campo "forma de pagamento" (dinheiro/cartão/pix) no pedido
+- [x] Cadastro de equipe restrito a admin (`/painel/equipe`, cria login
+      via Supabase Admin API com a service_role key só no servidor)
+- [x] Cardápio administrável (`/painel/produtos`): categorias, produtos
+      com nome/descrição/ingredientes/preço/foto (upload pro Supabase
+      Storage)/disponibilidade. A seção Cardápio do site (`Cardapio.tsx`)
+      agora busca isso do banco em vez de itens fixos no código —
+      cadastrar os 4 hambúrgueres reais (Maverick, VolksBurger, Niandertal,
+      Fusquinha) e as bebidas por lá, não mais editando o componente
 - [~] IMPORTANTE (achado durante o teste): inserts feitos pelo `anon` (site
       público) precisam usar `Prefer: return=minimal` / não encadear
       `.select()` no supabase-js — pedir o registro de volta (`RETURNING`)

@@ -196,3 +196,104 @@ as $$
 $$;
 
 grant execute on function public.pedido_status(uuid) to anon, authenticated;
+
+-- ====================================================
+-- CARDÁPIO (categorias + produtos)
+-- ====================================================
+
+create table if not exists public.categorias (
+  id uuid primary key default gen_random_uuid(),
+  nome text not null,
+  ordem int not null default 0,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.produtos (
+  id uuid primary key default gen_random_uuid(),
+  categoria_id uuid references public.categorias(id) on delete set null,
+  nome text not null,
+  descricao text,
+  ingredientes text,
+  preco numeric(10, 2),
+  imagem_url text,
+  disponivel boolean not null default true,
+  ordem int not null default 0,
+  created_at timestamptz not null default now()
+);
+
+grant usage on schema public to anon, authenticated;
+grant select on public.categorias to anon, authenticated;
+grant insert, update, delete on public.categorias to authenticated;
+grant select on public.produtos to anon, authenticated;
+grant insert, update, delete on public.produtos to authenticated;
+
+alter table public.categorias enable row level security;
+alter table public.produtos enable row level security;
+
+-- Categorias: todo mundo ve, so admin mexe.
+drop policy if exists "Categorias sao publicas" on public.categorias;
+create policy "Categorias sao publicas"
+  on public.categorias for select
+  to anon, authenticated
+  using (true);
+
+drop policy if exists "Admin gerencia categorias" on public.categorias;
+create policy "Admin gerencia categorias"
+  on public.categorias for all
+  to authenticated
+  using (
+    exists (select 1 from public.profiles where id = auth.uid() and role = 'admin')
+  )
+  with check (
+    exists (select 1 from public.profiles where id = auth.uid() and role = 'admin')
+  );
+
+-- Produtos: visitante do site (anon) so ve os disponiveis; admin ve e edita tudo.
+drop policy if exists "Produtos disponiveis sao publicos" on public.produtos;
+create policy "Produtos disponiveis sao publicos"
+  on public.produtos for select
+  to anon
+  using (disponivel = true);
+
+drop policy if exists "Admin ve todos os produtos" on public.produtos;
+create policy "Admin ve todos os produtos"
+  on public.produtos for select
+  to authenticated
+  using (
+    exists (select 1 from public.profiles where id = auth.uid() and role = 'admin')
+  );
+
+drop policy if exists "Admin gerencia produtos" on public.produtos;
+create policy "Admin gerencia produtos"
+  on public.produtos for all
+  to authenticated
+  using (
+    exists (select 1 from public.profiles where id = auth.uid() and role = 'admin')
+  )
+  with check (
+    exists (select 1 from public.profiles where id = auth.uid() and role = 'admin')
+  );
+
+-- Bucket de imagens dos produtos (publico pra leitura, so admin escreve).
+insert into storage.buckets (id, name, public)
+values ('produtos', 'produtos', true)
+on conflict (id) do nothing;
+
+drop policy if exists "Imagens de produtos sao publicas" on storage.objects;
+create policy "Imagens de produtos sao publicas"
+  on storage.objects for select
+  to anon, authenticated
+  using (bucket_id = 'produtos');
+
+drop policy if exists "Admin gerencia imagens de produtos" on storage.objects;
+create policy "Admin gerencia imagens de produtos"
+  on storage.objects for all
+  to authenticated
+  using (
+    bucket_id = 'produtos'
+    and exists (select 1 from public.profiles where id = auth.uid() and role = 'admin')
+  )
+  with check (
+    bucket_id = 'produtos'
+    and exists (select 1 from public.profiles where id = auth.uid() and role = 'admin')
+  );
