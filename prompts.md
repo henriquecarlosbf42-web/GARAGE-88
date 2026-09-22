@@ -65,6 +65,17 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [x] Preencher `.env.local` com URL + anon key do projeto Supabase real
 - [x] Rodar `supabase/schema.sql` no projeto Supabase (tabela confirmada via API)
 - [x] Criar usuário da equipe em Authentication → Users no Supabase (login testado com sucesso)
+- [x] Fluxo de escaneamento do motoboy melhorado: tela de confirmação com
+      check + "Escanear outro pedido" (em vez de só um aviso piscando);
+      fila mostra horário, endereço, forma de pagamento e se está pago;
+      aviso de "não esqueça a bebida" quando o pedido tem bebida
+      (`tem_bebida`, detectado automaticamente em `/pedir` pela categoria,
+      ou marcado manualmente em "Novo pedido"); entrega agora exige
+      reescanear o QR do pedido antes de marcar "entregue" (evita entregar
+      no endereço errado — se o QR não bater, dá erro e não conclui)
+- [x] Campo `pago` (booleano) no pedido — admin tem botão de alternar
+      "Pago"/"Não pago" na tabela; motoboy vê "cobrar na entrega" quando
+      não está pago
 - [x] Endereço real da loja: Av. Rui Barbosa, 1234 — Santana, São José dos
       Campos - SP, 12211-105 (atualizado no site)
 - [x] Cálculo real de rota pro motoboy (`/api/rota`): geocodifica endereços

@@ -27,6 +27,8 @@ export default function NovoPedidoPage() {
       taxa_entrega: form.get("taxa_entrega") || null,
       forma_pagamento: form.get("forma_pagamento") || null,
       origem: form.get("origem"),
+      pago: form.get("pago") === "on",
+      tem_bebida: form.get("tem_bebida") === "on",
     });
 
     setCarregando(false);
@@ -104,6 +106,17 @@ export default function NovoPedidoPage() {
               <option value="cartao">Cartão</option>
               <option value="pix">Pix</option>
             </select>
+          </label>
+        </div>
+
+        <div className="flex gap-6">
+          <label className="flex items-center gap-2 text-sm text-muted">
+            <input type="checkbox" name="pago" />
+            Já pago
+          </label>
+          <label className="flex items-center gap-2 text-sm text-muted">
+            <input type="checkbox" name="tem_bebida" />
+            Inclui bebida
           </label>
         </div>
 

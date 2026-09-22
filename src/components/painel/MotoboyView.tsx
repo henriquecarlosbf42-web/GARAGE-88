@@ -6,6 +6,7 @@ import {
   type Pedido,
   FORMA_PAGAMENTO_LABEL,
   destinoMapa,
+  horaPedido,
   linkRastreio,
   linkWhatsapp,
   linkRotaGoogleMaps,
@@ -13,6 +14,12 @@ import {
 import { QrScanner } from "@/components/painel/QrScanner";
 
 type Aviso = { tipo: "sucesso" | "erro" | "info"; texto: string };
+
+type EstadoScanner =
+  | { tipo: "fechado" }
+  | { tipo: "escaneando_pegar" }
+  | { tipo: "confirmado_pegar"; pedido: Pedido }
+  | { tipo: "escaneando_entrega"; alvo: Pedido };
 
 export function MotoboyView({
   pedidosIniciais,
@@ -24,9 +31,9 @@ export function MotoboyView({
   const [pedidos, setPedidos] = useState(pedidosIniciais);
   const [origin, setOrigin] = useState("");
   const [copiadoId, setCopiadoId] = useState<string | null>(null);
-  const [scannerAberto, setScannerAberto] = useState(false);
   const [aviso, setAviso] = useState<Aviso | null>(null);
   const [montandoRota, setMontandoRota] = useState(false);
+  const [scanner, setScanner] = useState<EstadoScanner>({ tipo: "fechado" });
 
   useEffect(() => {
     setOrigin(window.location.origin);
@@ -53,7 +60,7 @@ export function MotoboyView({
     .filter((p) => p.status !== "cancelado")
     .reduce((soma, p) => soma + (p.taxa_entrega ?? 0), 0);
 
-  async function handleScan(pedidoId: string) {
+  async function handleScanPegar(pedidoId: string) {
     const jaNaFila = pedidos.some((p) => p.id === pedidoId && p.motoboy_id === userId);
     if (jaNaFila) {
       setAviso({ tipo: "info", texto: "Você já pegou esse pedido." });
@@ -82,7 +89,7 @@ export function MotoboyView({
       .eq("id", pedidoId)
       .is("motoboy_id", null)
       .select()
-      .maybeSingle();
+      .maybeSingle<Pedido>();
 
     if (erroClaim || !claimado) {
       setAviso({
@@ -93,13 +100,32 @@ export function MotoboyView({
     }
 
     setPedidos((prev) => {
-      const existe = prev.some((p) => p.id === pedido.id);
-      const atualizado = { ...pedido, motoboy_id: userId };
+      const existe = prev.some((p) => p.id === claimado.id);
       return existe
-        ? prev.map((p) => (p.id === pedido.id ? atualizado : p))
-        : [...prev, atualizado];
+        ? prev.map((p) => (p.id === claimado.id ? claimado : p))
+        : [...prev, claimado];
     });
-    setAviso({ tipo: "sucesso", texto: `Pedido de ${pedido.cliente_nome} adicionado.` });
+    setScanner({ tipo: "confirmado_pegar", pedido: claimado });
+  }
+
+  async function handleScanEntrega(pedidoId: string, alvo: Pedido) {
+    if (pedidoId !== alvo.id) {
+      setScanner({ tipo: "fechado" });
+      setAviso({
+        tipo: "erro",
+        texto: `Esse QR não é do pedido de ${alvo.cliente_nome}. Confere se é o endereço certo antes de entregar!`,
+      });
+      return;
+    }
+
+    setPedidos((prev) =>
+      prev.map((p) => (p.id === alvo.id ? { ...p, status: "concluido" } : p)),
+    );
+    const supabase = createClient();
+    await supabase.from("pedidos").update({ status: "concluido" }).eq("id", alvo.id);
+
+    setScanner({ tipo: "fechado" });
+    setAviso({ tipo: "sucesso", texto: `Pedido de ${alvo.cliente_nome} entregue!` });
   }
 
   async function removerDaFila(id: string) {
@@ -145,14 +171,6 @@ export function MotoboyView({
     window.open(dados.url, "_blank");
   }
 
-  async function marcarEntregue(id: string) {
-    setPedidos((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, status: "concluido" } : p)),
-    );
-    const supabase = createClient();
-    await supabase.from("pedidos").update({ status: "concluido" }).eq("id", id);
-  }
-
   async function copiarLinkRastreio(pedido: Pedido) {
     const link = linkRastreio(pedido, origin);
     await navigator.clipboard.writeText(link);
@@ -178,7 +196,7 @@ export function MotoboyView({
 
       <section>
         <button
-          onClick={() => setScannerAberto(true)}
+          onClick={() => setScanner({ tipo: "escaneando_pegar" })}
           className="flex w-full flex-col items-center gap-3 rounded-2xl border-2 border-dashed border-white/20 py-10 text-center transition hover:border-accent"
         >
           <span className="text-4xl">📷</span>
@@ -191,10 +209,25 @@ export function MotoboyView({
         </button>
       </section>
 
-      {scannerAberto && (
+      {scanner.tipo === "escaneando_pegar" && (
         <QrScanner
-          onScan={handleScan}
-          onFechar={() => setScannerAberto(false)}
+          onScan={handleScanPegar}
+          onFechar={() => setScanner({ tipo: "fechado" })}
+        />
+      )}
+
+      {scanner.tipo === "escaneando_entrega" && (
+        <QrScanner
+          onScan={(texto) => handleScanEntrega(texto, scanner.alvo)}
+          onFechar={() => setScanner({ tipo: "fechado" })}
+        />
+      )}
+
+      {scanner.tipo === "confirmado_pegar" && (
+        <ConfirmacaoScan
+          pedido={scanner.pedido}
+          onEscanearOutro={() => setScanner({ tipo: "escaneando_pegar" })}
+          onFechar={() => setScanner({ tipo: "fechado" })}
         />
       )}
 
@@ -226,14 +259,26 @@ export function MotoboyView({
                 className="flex flex-wrap items-start justify-between gap-3 rounded-xl border border-white/10 bg-surface p-4"
               >
                 <div>
+                  <div className="text-xs text-muted">{horaPedido(pedido)}</div>
                   <div className="font-semibold">{pedido.cliente_nome}</div>
-                  <div className="text-sm text-muted">{pedido.itens}</div>
+                  <div className="text-sm text-muted">
+                    {pedido.itens}
+                    {pedido.tem_bebida && (
+                      <span className="ml-1 font-semibold text-accent-2">
+                        🥤 não esqueça a bebida!
+                      </span>
+                    )}
+                  </div>
                   <EnderecoLinha pedido={pedido} />
-                  {pedido.forma_pagamento && (
-                    <div className="text-sm text-muted">
-                      Pagamento: {FORMA_PAGAMENTO_LABEL[pedido.forma_pagamento] ?? pedido.forma_pagamento}
-                    </div>
-                  )}
+                  <div className="text-sm text-muted">
+                    {pedido.forma_pagamento
+                      ? FORMA_PAGAMENTO_LABEL[pedido.forma_pagamento] ?? pedido.forma_pagamento
+                      : "Pagamento não definido"}
+                    {" · "}
+                    <span className={pedido.pago ? "text-accent-2" : "text-red-300"}>
+                      {pedido.pago ? "pago" : "cobrar na entrega"}
+                    </span>
+                  </div>
                 </div>
                 <div className="flex flex-col items-end gap-2">
                   <span className="font-semibold text-accent-2">
@@ -278,9 +323,22 @@ export function MotoboyView({
                 >
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
+                      <div className="text-xs text-muted">{horaPedido(pedido)}</div>
                       <div className="font-semibold">{pedido.cliente_nome}</div>
-                      <div className="text-sm text-muted">{pedido.itens}</div>
+                      <div className="text-sm text-muted">
+                        {pedido.itens}
+                        {pedido.tem_bebida && <span className="ml-1">🥤</span>}
+                      </div>
                       <EnderecoLinha pedido={pedido} />
+                      <div className="text-sm text-muted">
+                        {pedido.forma_pagamento
+                          ? FORMA_PAGAMENTO_LABEL[pedido.forma_pagamento] ?? pedido.forma_pagamento
+                          : "Pagamento não definido"}
+                        {" · "}
+                        <span className={pedido.pago ? "text-accent-2" : "text-red-300"}>
+                          {pedido.pago ? "pago" : "cobrar na entrega"}
+                        </span>
+                      </div>
                     </div>
                     <div className="text-right text-sm">
                       <div className="font-semibold text-accent-2">
@@ -297,10 +355,10 @@ export function MotoboyView({
                   <div className="mt-3 flex flex-wrap gap-2">
                     {!concluido && (
                       <button
-                        onClick={() => marcarEntregue(pedido.id)}
+                        onClick={() => setScanner({ tipo: "escaneando_entrega", alvo: pedido })}
                         className="rounded-full bg-accent px-3 py-1 text-xs font-semibold text-background transition hover:bg-accent-2"
                       >
-                        Marcar entregue
+                        Entregar pedido (escanear)
                       </button>
                     )}
                     {destinoMapa(pedido) && (
@@ -336,6 +394,45 @@ export function MotoboyView({
           </div>
         )}
       </section>
+    </div>
+  );
+}
+
+function ConfirmacaoScan({
+  pedido,
+  onEscanearOutro,
+  onFechar,
+}: {
+  pedido: Pedido;
+  onEscanearOutro: () => void;
+  onFechar: () => void;
+}) {
+  return (
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/95 p-6 text-center">
+      <span className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-3xl text-background">
+        ✓
+      </span>
+      <h2 className="mt-4 font-heading text-2xl uppercase tracking-wide">
+        Pedido escaneado!
+      </h2>
+      <p className="mt-2 font-semibold">{pedido.cliente_nome}</p>
+      <p className="text-sm text-muted">{pedido.itens}</p>
+      {pedido.tem_bebida && (
+        <p className="mt-2 font-semibold text-accent-2">🥤 Não esqueça a bebida!</p>
+      )}
+
+      <button
+        onClick={onEscanearOutro}
+        className="mt-8 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-background transition hover:bg-accent-2"
+      >
+        Escanear outro pedido
+      </button>
+      <button
+        onClick={onFechar}
+        className="mt-3 rounded-full border border-white/20 px-6 py-3 text-sm transition hover:border-white/40"
+      >
+        Terminar por aqui
+      </button>
     </div>
   );
 }

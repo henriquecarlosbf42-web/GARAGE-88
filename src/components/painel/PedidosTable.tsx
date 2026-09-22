@@ -8,6 +8,7 @@ import {
   STATUS_OPCOES,
   STATUS_LABEL,
   destinoMapa,
+  horaPedido,
   linkRastreio,
   linkWhatsapp,
   linkRotaGoogleMaps,
@@ -56,6 +57,15 @@ export function PedidosTable({ pedidosIniciais }: { pedidosIniciais: Pedido[] })
 
     const supabase = createClient();
     await supabase.from("pedidos").update({ status }).eq("id", id);
+  }
+
+  async function alternarPago(pedido: Pedido) {
+    const novoValor = !pedido.pago;
+    setPedidos((prev) =>
+      prev.map((p) => (p.id === pedido.id ? { ...p, pago: novoValor } : p)),
+    );
+    const supabase = createClient();
+    await supabase.from("pedidos").update({ pago: novoValor }).eq("id", pedido.id);
   }
 
   async function biparSelecionados() {
@@ -117,14 +127,16 @@ export function PedidosTable({ pedidosIniciais }: { pedidosIniciais: Pedido[] })
       )}
 
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[1080px] text-left text-sm">
+        <table className="w-full min-w-[1240px] text-left text-sm">
           <thead className="text-muted">
             <tr className="border-b border-white/10">
               <th className="py-3 pr-4"></th>
+              <th className="py-3 pr-4">Hora</th>
               <th className="py-3 pr-4">Cliente</th>
               <th className="py-3 pr-4">Itens</th>
               <th className="py-3 pr-4">Endereço</th>
               <th className="py-3 pr-4">Valor</th>
+              <th className="py-3 pr-4">Pago</th>
               <th className="py-3 pr-4">Taxa</th>
               <th className="py-3 pr-4">Status</th>
               <th className="py-3 pr-4">Avisar</th>
@@ -144,6 +156,7 @@ export function PedidosTable({ pedidosIniciais }: { pedidosIniciais: Pedido[] })
                       onChange={() => alternarSelecao(pedido.id)}
                     />
                   </td>
+                  <td className="py-3 pr-4 text-xs text-muted">{horaPedido(pedido)}</td>
                   <td className="py-3 pr-4">
                     <div>{pedido.cliente_nome}</div>
                     {pedido.cliente_telefone && (
@@ -153,7 +166,10 @@ export function PedidosTable({ pedidosIniciais }: { pedidosIniciais: Pedido[] })
                     )}
                   </td>
                   <td className="py-3 pr-4 max-w-xs">
-                    <div>{pedido.itens}</div>
+                    <div>
+                      {pedido.itens}
+                      {pedido.tem_bebida && <span className="ml-1">🥤</span>}
+                    </div>
                     {pedido.observacoes && (
                       <div className="text-xs text-muted">
                         {pedido.observacoes}
@@ -168,6 +184,18 @@ export function PedidosTable({ pedidosIniciais }: { pedidosIniciais: Pedido[] })
                   </td>
                   <td className="py-3 pr-4">
                     {pedido.valor_total ? `R$ ${pedido.valor_total.toFixed(2)}` : "—"}
+                  </td>
+                  <td className="py-3 pr-4">
+                    <button
+                      onClick={() => alternarPago(pedido)}
+                      className={`rounded-full border px-3 py-1 text-xs transition ${
+                        pedido.pago
+                          ? "border-accent/40 bg-accent/10 text-accent-2"
+                          : "border-white/20 hover:border-white/40"
+                      }`}
+                    >
+                      {pedido.pago ? "Pago ✓" : "Não pago"}
+                    </button>
                   </td>
                   <td className="py-3 pr-4">
                     {pedido.taxa_entrega ? `R$ ${pedido.taxa_entrega.toFixed(2)}` : "—"}

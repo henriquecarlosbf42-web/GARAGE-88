@@ -135,6 +135,10 @@ export default function PedirPage() {
       origem: "site",
       latitude: localizacao?.lat ?? null,
       longitude: localizacao?.lng ?? null,
+      tem_bebida: itensCarrinho.some((item) => {
+        const categoria = categorias.find((c) => c.id === item.produto.categoria_id);
+        return categoria?.nome.toLowerCase().includes("bebida");
+      }),
     });
 
     setEnviando(false);

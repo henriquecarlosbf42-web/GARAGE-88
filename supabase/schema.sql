@@ -28,6 +28,8 @@ alter table public.pedidos add constraint pedidos_forma_pagamento_check
   check (forma_pagamento in ('dinheiro', 'cartao', 'pix'));
 alter table public.pedidos add column if not exists latitude double precision;
 alter table public.pedidos add column if not exists longitude double precision;
+alter table public.pedidos add column if not exists pago boolean not null default false;
+alter table public.pedidos add column if not exists tem_bebida boolean not null default false;
 
 -- Papel de cada usuário da equipe: 'admin' (cozinha/gestão, vê tudo) ou
 -- 'motoboy' (só vê pedidos prontos pra pegar ou que ele mesmo pegou).

@@ -13,8 +13,17 @@ export type Pedido = {
   motoboy_id: string | null;
   latitude: number | null;
   longitude: number | null;
+  pago: boolean;
+  tem_bebida: boolean;
   created_at: string;
 };
+
+export function horaPedido(pedido: Pedido) {
+  return new Date(pedido.created_at).toLocaleTimeString("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
 
 export const FORMA_PAGAMENTO_LABEL: Record<string, string> = {
   dinheiro: "Dinheiro",
