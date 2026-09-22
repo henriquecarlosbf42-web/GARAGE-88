@@ -65,6 +65,15 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [x] Preencher `.env.local` com URL + anon key do projeto Supabase real
 - [x] Rodar `supabase/schema.sql` no projeto Supabase (tabela confirmada via API)
 - [x] Criar usuário da equipe em Authentication → Users no Supabase (login testado com sucesso)
+- [x] Foto real da equipe no topo do site (seção nova, antes do Hero), com
+      efeito parallax por scroll (a foto se move mais devagar que a rolagem
+      da página — funciona em mobile e desktop, diferente do parallax por
+      mouse que só funciona com cursor). Foto tinha "Garage Mineiro" escrito
+      no boné/camisa na primeira versão — cliente reenviou com "Garage
+      Burger", confirmado como ok pra usar. Arquivo em
+      `public/images/equipe-garage88.png`, servido via `next/image`
+      (otimiza automaticamente o PNG de 2.4MB pra carregar rápido no
+      celular)
 - [x] Cardápio do site com cards animados (framer-motion): foto do produto
       com zoom suave no hover, fade-in ao entrar na tela, botão "Pedir"
       que aparece por cima da foto — baseado num componente que o cliente
