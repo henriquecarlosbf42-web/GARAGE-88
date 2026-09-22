@@ -159,41 +159,41 @@ export default function PedirPage() {
   if (!cliente) {
     return (
       <main className="mx-auto flex max-w-md flex-1 flex-col px-6 py-16">
-        <p className="text-sm font-semibold uppercase tracking-widest text-accent-2">
+        <p className="text-base font-semibold uppercase tracking-widest text-accent-2">
           Garage 88
         </p>
-        <h1 className="mt-1 font-heading text-3xl uppercase tracking-wide">
+        <h1 className="mt-1 font-heading text-4xl uppercase tracking-wide">
           Fazer pedido
         </h1>
-        <p className="mt-2 text-muted">
+        <p className="mt-2 text-lg text-muted">
           Só precisamos de nome e WhatsApp pra confirmar seu pedido.
         </p>
 
         <form onSubmit={handleCadastro} className="mt-8 flex flex-col gap-4">
-          <label className="text-sm text-muted">
+          <label className="text-base text-muted">
             Nome
             <input
               name="nome"
               required
-              className="mt-1 w-full rounded-lg border border-white/10 bg-background px-3 py-2 text-foreground outline-none focus:border-accent"
+              className="mt-1 w-full rounded-lg border border-white/10 bg-background px-4 py-3 text-lg text-foreground outline-none focus:border-accent"
             />
           </label>
-          <label className="text-sm text-muted">
+          <label className="text-base text-muted">
             WhatsApp
             <input
               name="telefone"
               required
               placeholder="(12) 90000-0000"
-              className="mt-1 w-full rounded-lg border border-white/10 bg-background px-3 py-2 text-foreground outline-none focus:border-accent"
+              className="mt-1 w-full rounded-lg border border-white/10 bg-background px-4 py-3 text-lg text-foreground outline-none focus:border-accent"
             />
           </label>
-          <label className="text-sm text-muted">
+          <label className="text-base text-muted">
             Endereço de entrega
             <textarea
               name="endereco"
               rows={2}
               placeholder="Rua, número, bairro"
-              className="mt-1 w-full rounded-lg border border-white/10 bg-background px-3 py-2 text-foreground outline-none focus:border-accent"
+              className="mt-1 w-full rounded-lg border border-white/10 bg-background px-4 py-3 text-lg text-foreground outline-none focus:border-accent"
             />
           </label>
 
@@ -202,7 +202,7 @@ export default function PedirPage() {
               type="button"
               onClick={capturarLocalizacao}
               disabled={buscandoLocalizacao}
-              className="rounded-full border border-white/20 px-4 py-2 text-sm transition hover:border-white/40 disabled:opacity-60"
+              className="rounded-full border border-white/20 px-5 py-3 text-base transition hover:border-white/40 disabled:opacity-60"
             >
               {buscandoLocalizacao
                 ? "Buscando localização..."
@@ -211,10 +211,10 @@ export default function PedirPage() {
                   : "📍 Usar minha localização (opcional)"}
             </button>
             {erroLocalizacao && (
-              <p className="mt-2 text-xs text-red-400">{erroLocalizacao}</p>
+              <p className="mt-2 text-sm text-red-400">{erroLocalizacao}</p>
             )}
             {localizacao && (
-              <p className="mt-2 text-xs text-muted">
+              <p className="mt-2 text-sm text-muted">
                 Isso ajuda o motoboy a chegar certinho, mesmo sem endereço.
               </p>
             )}
@@ -222,7 +222,7 @@ export default function PedirPage() {
 
           <button
             type="submit"
-            className="mt-2 rounded-full bg-accent px-6 py-3 font-semibold text-background transition hover:bg-accent-2"
+            className="mt-2 rounded-full bg-accent px-7 py-4 text-lg font-semibold text-background transition hover:bg-accent-2"
           >
             Continuar
           </button>
@@ -235,28 +235,28 @@ export default function PedirPage() {
     <main className="mx-auto flex max-w-3xl flex-1 flex-col px-6 py-10 pb-32">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-widest text-accent-2">
+          <p className="text-base font-semibold uppercase tracking-widest text-accent-2">
             Garage 88
           </p>
-          <h1 className="mt-1 font-heading text-3xl uppercase tracking-wide">
+          <h1 className="mt-1 font-heading text-4xl uppercase tracking-wide">
             Monte seu pedido
           </h1>
         </div>
         <button
           onClick={() => setCliente(null)}
-          className="text-xs text-muted underline hover:text-foreground"
+          className="text-sm text-muted underline hover:text-foreground"
         >
           Trocar dados
         </button>
       </div>
-      <p className="mt-1 text-sm text-muted">Oi, {cliente.nome.split(" ")[0]}!</p>
+      <p className="mt-1 text-lg text-muted">Oi, {cliente.nome.split(" ")[0]}!</p>
 
       <div className="mt-4">
         <button
           type="button"
           onClick={capturarLocalizacao}
           disabled={buscandoLocalizacao}
-          className="rounded-full border border-white/20 px-4 py-2 text-sm transition hover:border-white/40 disabled:opacity-60"
+          className="rounded-full border border-white/20 px-5 py-3 text-base transition hover:border-white/40 disabled:opacity-60"
         >
           {buscandoLocalizacao
             ? "Buscando localização..."
@@ -265,12 +265,12 @@ export default function PedirPage() {
               : "📍 Usar minha localização (opcional)"}
         </button>
         {erroLocalizacao && (
-          <p className="mt-2 text-xs text-red-400">{erroLocalizacao}</p>
+          <p className="mt-2 text-sm text-red-400">{erroLocalizacao}</p>
         )}
       </div>
 
       {produtos.length === 0 ? (
-        <p className="mt-10 text-muted">Cardápio em atualização — volte em breve.</p>
+        <p className="mt-10 text-lg text-muted">Cardápio em atualização — volte em breve.</p>
       ) : (
         <div className="mt-8 flex flex-col gap-10">
           {categorias.map((categoria) => {
@@ -278,7 +278,7 @@ export default function PedirPage() {
             if (doGrupo.length === 0) return null;
             return (
               <div key={categoria.id}>
-                <h2 className="font-heading text-xl uppercase tracking-wide text-accent-2">
+                <h2 className="font-heading text-2xl uppercase tracking-wide text-accent-2">
                   {categoria.nome}
                 </h2>
                 <div className="mt-4 flex flex-col gap-3">
@@ -316,17 +316,17 @@ export default function PedirPage() {
         <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-background/95 p-4 backdrop-blur">
           <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-sm text-muted">
+              <p className="text-base text-muted">
                 {itensCarrinho.reduce((n, i) => n + i.quantidade, 0)} item(ns)
               </p>
-              <p className="font-heading text-xl uppercase tracking-wide text-accent-2">
+              <p className="font-heading text-2xl uppercase tracking-wide text-accent-2">
                 R$ {totalPedido.toFixed(2)}
               </p>
             </div>
             <select
               value={formaPagamento}
               onChange={(e) => setFormaPagamento(e.target.value)}
-              className="rounded-lg border border-white/10 bg-surface px-3 py-2 text-sm outline-none focus:border-accent"
+              className="rounded-lg border border-white/10 bg-surface px-4 py-3 text-base outline-none focus:border-accent"
             >
               <option value="dinheiro">Dinheiro</option>
               <option value="cartao">Cartão</option>
@@ -335,12 +335,12 @@ export default function PedirPage() {
             <button
               onClick={finalizarPedido}
               disabled={enviando}
-              className="rounded-full bg-accent px-6 py-3 font-semibold text-background transition hover:bg-accent-2 disabled:opacity-60"
+              className="rounded-full bg-accent px-7 py-4 text-lg font-semibold text-background transition hover:bg-accent-2"
             >
               {enviando ? "Enviando..." : "Finalizar pedido"}
             </button>
           </div>
-          {erro && <p className="mx-auto mt-2 max-w-3xl text-sm text-red-400">{erro}</p>}
+          {erro && <p className="mx-auto mt-2 max-w-3xl text-base text-red-400">{erro}</p>}
         </div>
       )}
     </main>
@@ -375,26 +375,26 @@ function ProdutoCard({
           <img
             src={produto.imagem_url}
             alt={produto.nome}
-            className="h-16 w-16 rounded-lg object-cover"
+            className="h-24 w-24 rounded-lg object-cover"
           />
         ) : (
-          <div className="h-16 w-16 rounded-lg bg-background" />
+          <div className="h-24 w-24 rounded-lg bg-background" />
         )}
         {selecionado && (
-          <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-accent text-xs font-bold text-background">
+          <span className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full bg-accent text-sm font-bold text-background">
             {quantidade}
           </span>
         )}
       </div>
       <div className="flex-1">
-        <div className="font-semibold">{produto.nome}</div>
+        <div className="text-lg font-semibold">{produto.nome}</div>
         {(produto.ingredientes || produto.descricao) && (
-          <div className="text-xs text-muted">
+          <div className="text-sm text-muted">
             {produto.ingredientes || produto.descricao}
           </div>
         )}
         {produto.preco != null && (
-          <div className="mt-1 text-sm text-accent-2">R$ {produto.preco.toFixed(2)}</div>
+          <div className="mt-1 text-base text-accent-2">R$ {produto.preco.toFixed(2)}</div>
         )}
       </div>
       {selecionado && (
@@ -411,7 +411,7 @@ function ProdutoCard({
               onAlterar(-1);
             }
           }}
-          className="shrink-0 rounded-full border border-white/20 px-3 py-1 text-xs text-muted transition hover:border-white/40 hover:text-foreground"
+          className="shrink-0 rounded-full border border-white/20 px-4 py-2 text-sm text-muted transition hover:border-white/40 hover:text-foreground"
         >
           Remover
         </span>
