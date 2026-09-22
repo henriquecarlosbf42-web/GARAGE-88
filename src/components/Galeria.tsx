@@ -5,10 +5,10 @@ const PENDENTES = ["Chapa", "Batata", "Bastidores", "Bebidas"];
 export function Galeria() {
   return (
     <section className="mx-auto max-w-5xl px-6 py-16 text-center">
-      <h2 className="font-heading text-4xl uppercase tracking-wide sm:text-5xl">
+      <h2 className="font-heading text-5xl uppercase tracking-wide sm:text-6xl">
         Galeria
       </h2>
-      <p className="mx-auto mt-3 max-w-xl text-muted">
+      <p className="mx-auto mt-3 max-w-xl text-lg text-muted">
         Um pouco do nosso ambiente e dos bastidores.
       </p>
 

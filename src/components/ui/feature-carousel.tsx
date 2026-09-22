@@ -12,7 +12,7 @@ export interface ProdutoFeature {
 }
 
 const AUTO_PLAY_INTERVAL = 3500;
-const ITEM_HEIGHT = 56;
+const ITEM_HEIGHT = 64;
 
 const wrap = (min: number, max: number, v: number) => {
   const rangeSize = max - min;
@@ -91,7 +91,7 @@ export function FeatureCarousel({
                     onMouseEnter={() => setIsPaused(true)}
                     onMouseLeave={() => setIsPaused(false)}
                     className={cn(
-                      "relative rounded-full border px-6 py-3 text-left text-sm font-semibold uppercase tracking-wide transition-all duration-500",
+                      "relative rounded-full border px-7 py-3.5 text-left text-base font-semibold uppercase tracking-wide transition-all duration-500",
                       isActive
                         ? "border-accent bg-accent text-background"
                         : "border-white/15 text-muted hover:border-white/30 hover:text-foreground",
@@ -153,17 +153,17 @@ export function FeatureCarousel({
                         exit={{ opacity: 0, y: 10 }}
                         className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col justify-end bg-gradient-to-t from-black/90 via-black/40 to-transparent p-6 pt-24"
                       >
-                        <p className="font-heading text-lg uppercase tracking-wide text-white drop-shadow-md">
+                        <p className="font-heading text-2xl uppercase tracking-wide text-white drop-shadow-md">
                           {produto.nome}
                         </p>
                         {produto.ingredientes && (
-                          <p className="mt-1 text-sm leading-snug text-white/80">
+                          <p className="mt-1 text-base leading-snug text-white/80">
                             {produto.ingredientes}
                           </p>
                         )}
                         <a
                           href={hrefPedir}
-                          className="pointer-events-auto mt-4 inline-block w-fit rounded-full bg-white px-5 py-2 text-xs font-semibold text-black"
+                          className="pointer-events-auto mt-4 inline-block w-fit rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-black"
                         >
                           Pedir
                         </a>

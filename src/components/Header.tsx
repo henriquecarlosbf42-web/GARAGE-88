@@ -23,10 +23,10 @@ export function Header() {
       }`}
     >
       <div className="mx-auto flex max-w-5xl items-center justify-between px-6">
-        <Link href="/" className="font-heading text-2xl uppercase tracking-wide">
+        <Link href="/" className="font-heading text-3xl uppercase tracking-wide">
           Garage 88
         </Link>
-        <nav className="hidden gap-6 text-sm text-muted sm:flex">
+        <nav className="hidden gap-6 text-base text-muted sm:flex">
           <Link href="/" className="hover:text-foreground">
             Início
           </Link>
@@ -53,7 +53,7 @@ export function Header() {
           </a>
           <Link
             href="/cardapio"
-            className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-background transition hover:bg-accent-2"
+            className="rounded-full bg-accent px-5 py-2.5 text-base font-semibold text-background transition hover:bg-accent-2"
           >
             Pedir agora
           </Link>

@@ -2,10 +2,10 @@ export function Sobre() {
   return (
     <section id="sobre" className="mx-auto max-w-5xl px-6 py-16 text-center">
       <div className="mx-auto max-w-2xl">
-        <h2 className="font-heading text-4xl uppercase tracking-wide sm:text-5xl">
+        <h2 className="font-heading text-5xl uppercase tracking-wide sm:text-6xl">
           Conhecendo o Garage88
         </h2>
-        <p className="mt-4 text-muted">
+        <p className="mt-4 text-lg text-muted">
           Na Garage 88, hambúrguer não é fast-food — é processo. Pão, carne
           e molhos pensados pra cada camada contar. Aqui em São José dos
           Campos, montamos um espaço{" "}

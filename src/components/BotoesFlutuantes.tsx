@@ -18,7 +18,7 @@ export function BotoesFlutuantes() {
       {/* Mobile: barra fixa "Pedir agora" no rodapé da tela. */}
       <Link
         href="/cardapio"
-        className="fixed inset-x-4 bottom-4 z-50 rounded-full bg-accent px-6 py-3 text-center font-semibold text-background shadow-lg shadow-black/40 transition hover:bg-accent-2 sm:hidden"
+        className="fixed inset-x-4 bottom-4 z-50 rounded-full bg-accent px-6 py-4 text-center text-lg font-semibold text-background shadow-lg shadow-black/40 transition hover:bg-accent-2 sm:hidden"
       >
         🍔 Pedir agora
       </Link>

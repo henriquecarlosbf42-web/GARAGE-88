@@ -13,8 +13,8 @@ export function Beneficios() {
       <div className="mx-auto grid max-w-5xl grid-cols-2 gap-6 px-6 py-10 text-center sm:grid-cols-4">
         {ITENS.map(({ icone: Icone, titulo, subtitulo }) => (
           <div key={titulo} className="flex flex-col items-center gap-2">
-            <Icone className="h-6 w-6 text-accent-2" strokeWidth={1.5} />
-            <p className="text-sm font-semibold uppercase leading-tight tracking-wide">
+            <Icone className="h-8 w-8 text-accent-2" strokeWidth={1.5} />
+            <p className="text-base font-semibold uppercase leading-tight tracking-wide">
               {titulo}
               <br />
               {subtitulo}

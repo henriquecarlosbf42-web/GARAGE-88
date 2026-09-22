@@ -19,10 +19,10 @@ export async function Destaques() {
   return (
     <section id="cardapio" className="border-t border-white/10 bg-surface">
       <div className="mx-auto max-w-5xl px-6 py-16 text-center">
-        <h2 className="font-heading text-4xl uppercase tracking-wide sm:text-5xl">
+        <h2 className="font-heading text-5xl uppercase tracking-wide sm:text-6xl">
           Nossos destaques
         </h2>
-        <p className="mx-auto mt-3 max-w-xl text-muted">
+        <p className="mx-auto mt-3 max-w-xl text-lg text-muted">
           Os favoritos da casa.
         </p>
 
@@ -44,7 +44,7 @@ export async function Destaques() {
 
         <Link
           href="/cardapio"
-          className="mt-10 inline-block rounded-full border border-white/20 px-8 py-3 font-semibold transition hover:border-white/40"
+          className="mt-10 inline-block rounded-full border border-white/20 px-9 py-4 text-lg font-semibold transition hover:border-white/40"
         >
           Ver todo o cardápio →
         </Link>

@@ -6,19 +6,19 @@ export function Footer() {
     <footer id="contato" className="border-t border-white/10 bg-background">
       <div className="mx-auto grid max-w-5xl gap-10 px-6 py-14 text-center sm:grid-cols-4 sm:text-left">
         <div>
-          <span className="font-heading text-2xl uppercase tracking-wide">
+          <span className="font-heading text-3xl uppercase tracking-wide">
             Garage 88
           </span>
-          <p className="mt-2 text-sm text-muted">
+          <p className="mt-2 text-base text-muted">
             Hambúrguer artesanal em São José dos Campos.
           </p>
         </div>
 
         <div>
-          <h3 className="text-xs font-semibold uppercase tracking-widest text-accent-2">
+          <h3 className="text-sm font-semibold uppercase tracking-widest text-accent-2">
             Navegação
           </h3>
-          <ul className="mt-3 flex flex-col gap-2 text-sm text-muted">
+          <ul className="mt-3 flex flex-col gap-2 text-base text-muted">
             <li>
               <Link href="/" className="hover:text-foreground">
                 Início
@@ -43,10 +43,10 @@ export function Footer() {
         </div>
 
         <div>
-          <h3 className="text-xs font-semibold uppercase tracking-widest text-accent-2">
+          <h3 className="text-sm font-semibold uppercase tracking-widest text-accent-2">
             Contato
           </h3>
-          <ul className="mt-3 flex flex-col gap-2 text-sm text-muted">
+          <ul className="mt-3 flex flex-col gap-2 text-base text-muted">
             <li>WhatsApp: [PLACEHOLDER]</li>
             <li>
               <a
@@ -55,7 +55,7 @@ export function Footer() {
                 rel="noreferrer"
                 className="inline-flex items-center gap-1 hover:text-foreground"
               >
-                <AtSign className="h-3.5 w-3.5" />
+                <AtSign className="h-4 w-4" />
                 @garage88.ne
               </a>
             </li>
@@ -64,13 +64,13 @@ export function Footer() {
         </div>
 
         <div>
-          <h3 className="text-xs font-semibold uppercase tracking-widest text-accent-2">
+          <h3 className="text-sm font-semibold uppercase tracking-widest text-accent-2">
             Horário e localização
           </h3>
-          <p className="mt-3 text-sm text-muted">
+          <p className="mt-3 text-base text-muted">
             Quinta a domingo, das 18h30 às 23h30
           </p>
-          <p className="mt-2 text-sm text-muted">
+          <p className="mt-2 text-base text-muted">
             Av. Rui Barbosa, 1234 — Santana
             <br />
             São José dos Campos - SP, 12211-105
