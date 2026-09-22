@@ -68,6 +68,12 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [ ] Definir fluxo real de "Pedir agora" (form próprio vs. integração
       delivery/WhatsApp) — hoje é só um placeholder de CTA
 - [x] Pedido fictício criado no banco pra teste (visível no painel)
+- [x] Papéis separados: admin (cozinha/gestão, painel `/painel`) vs motoboy
+      (painel `/painel/motoboy`) — motoboy só vê pedidos "em preparo" sem
+      dono ou os que ele mesmo pegou; não vê histórico nem cria pedidos.
+      Papel fica na tabela `profiles`, novo usuário nasce "admin" por
+      padrão — pra virar motoboy, rodar depois de criar o login dele:
+      `update public.profiles set role = 'motoboy' where id = '<uuid>';`
 - [~] IMPORTANTE (achado durante o teste): inserts feitos pelo `anon` (site
       público) precisam usar `Prefer: return=minimal` / não encadear
       `.select()` no supabase-js — pedir o registro de volta (`RETURNING`)

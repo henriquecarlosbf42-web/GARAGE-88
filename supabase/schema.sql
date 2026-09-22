@@ -17,42 +17,151 @@ create table if not exists public.pedidos (
 );
 
 -- Rodando de novo num banco que já tem a tabela (sem essas colunas)?
--- Essas duas linhas adicionam o que faltar, sem dar erro se já existir.
+-- Essas linhas adicionam o que faltar, sem dar erro se já existir.
 alter table public.pedidos add column if not exists endereco_entrega text;
 alter table public.pedidos add column if not exists taxa_entrega numeric(10, 2);
+alter table public.pedidos add column if not exists motoboy_id uuid references auth.users(id);
+
+-- Papel de cada usuário da equipe: 'admin' (cozinha/gestão, vê tudo) ou
+-- 'motoboy' (só vê pedidos prontos pra pegar ou que ele mesmo pegou).
+create table if not exists public.profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  role text not null default 'admin' check (role in ('admin', 'motoboy')),
+  nome text,
+  created_at timestamptz not null default now()
+);
+
+grant select on public.profiles to authenticated;
+alter table public.profiles enable row level security;
+
+drop policy if exists "Usuario ve o proprio perfil" on public.profiles;
+create policy "Usuario ve o proprio perfil"
+  on public.profiles for select
+  to authenticated
+  using (id = auth.uid());
+
+-- Todo usuário novo criado em Authentication -> Users vira 'admin' por
+-- padrão. Pra transformar alguém em motoboy, depois de criar o login dele,
+-- rodar: update public.profiles set role = 'motoboy' where id = '<uuid do usuario>';
+-- (o uuid aparece na tela de Authentication -> Users, ao abrir o usuário)
+create or replace function public.criar_perfil_novo_usuario()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  insert into public.profiles (id, role, nome)
+  values (new.id, 'admin', new.email)
+  on conflict (id) do nothing;
+  return new;
+end;
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute function public.criar_perfil_novo_usuario();
+
+-- Cria o perfil de quem já tinha usuário criado antes dessa tabela existir.
+insert into public.profiles (id, role, nome)
+select id, 'admin', email from auth.users
+on conflict (id) do nothing;
 
 -- Tabelas criadas via SQL Editor (em vez do Table Editor) nao ganham grant
 -- automatico pros papeis anon/authenticated -- precisa liberar explicitamente
 -- (as politicas de RLS abaixo continuam controlando o que cada um ve/edita).
 grant usage on schema public to anon, authenticated;
 grant insert on public.pedidos to anon;
-grant select, update on public.pedidos to authenticated;
+grant select, insert, update on public.pedidos to authenticated;
 
 alter table public.pedidos enable row level security;
 
 -- drop policy if exists antes de cada create: torna seguro rodar esse
 -- arquivo mais de uma vez sem dar erro de "policy already exists".
 
--- Qualquer pessoa (site público) pode CRIAR um pedido.
+-- Qualquer visitante do site (anon) pode criar um pedido. Da equipe
+-- logada, só admin pode criar pedido manualmente (motoboy não deveria).
 drop policy if exists "Qualquer um pode criar pedido" on public.pedidos;
-create policy "Qualquer um pode criar pedido"
+create policy "Anon ou admin pode criar pedido"
   on public.pedidos for insert
   to anon, authenticated
-  with check (true);
+  with check (
+    auth.role() = 'anon'
+    or exists (
+      select 1 from public.profiles
+      where id = auth.uid() and role = 'admin'
+    )
+  );
 
--- Só usuários autenticados (equipe, logada no painel) podem VER e ATUALIZAR pedidos.
+-- Admin (cozinha/gestão) vê e atualiza TODOS os pedidos.
 drop policy if exists "Equipe autenticada pode ver pedidos" on public.pedidos;
-create policy "Equipe autenticada pode ver pedidos"
+drop policy if exists "Admin ve todos os pedidos" on public.pedidos;
+create policy "Admin ve todos os pedidos"
   on public.pedidos for select
   to authenticated
-  using (true);
+  using (
+    exists (
+      select 1 from public.profiles
+      where id = auth.uid() and role = 'admin'
+    )
+  );
 
 drop policy if exists "Equipe autenticada pode atualizar pedidos" on public.pedidos;
-create policy "Equipe autenticada pode atualizar pedidos"
+drop policy if exists "Admin atualiza qualquer pedido" on public.pedidos;
+create policy "Admin atualiza qualquer pedido"
   on public.pedidos for update
   to authenticated
-  using (true)
-  with check (true);
+  using (
+    exists (
+      select 1 from public.profiles
+      where id = auth.uid() and role = 'admin'
+    )
+  )
+  with check (
+    exists (
+      select 1 from public.profiles
+      where id = auth.uid() and role = 'admin'
+    )
+  );
+
+-- Motoboy só vê pedidos prontos e ainda sem ninguém (pra escolher pegar) ou
+-- os que ele mesmo já pegou (pra acompanhar as próprias entregas).
+drop policy if exists "Motoboy ve pedidos prontos ou proprios" on public.pedidos;
+create policy "Motoboy ve pedidos prontos ou proprios"
+  on public.pedidos for select
+  to authenticated
+  using (
+    exists (
+      select 1 from public.profiles
+      where id = auth.uid() and role = 'motoboy'
+    )
+    and (
+      (status = 'em_preparo' and motoboy_id is null)
+      or motoboy_id = auth.uid()
+    )
+  );
+
+drop policy if exists "Motoboy atualiza pedidos visiveis" on public.pedidos;
+create policy "Motoboy atualiza pedidos visiveis"
+  on public.pedidos for update
+  to authenticated
+  using (
+    exists (
+      select 1 from public.profiles
+      where id = auth.uid() and role = 'motoboy'
+    )
+    and (
+      (status = 'em_preparo' and motoboy_id is null)
+      or motoboy_id = auth.uid()
+    )
+  )
+  with check (
+    exists (
+      select 1 from public.profiles
+      where id = auth.uid() and role = 'motoboy'
+    )
+  );
 
 -- Criar os usuários da equipe em Authentication → Users no Supabase Dashboard
 -- (convite por email, não tem cadastro público no painel).
