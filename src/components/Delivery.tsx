@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export function Delivery() {
   return (
-    <section className="border-t border-white/10 bg-background">
+    <section id="delivery" className="border-t border-white/10 bg-background">
       <div className="mx-auto max-w-2xl px-6 py-14">
         <Link
           href="/cardapio"

@@ -68,6 +68,22 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [~] Fonte dos títulos: testamos Cinzel Decorative (Google Fonts, mais
       elegante/clássica), cliente não gostou do resultado — voltou pra
       Bebas Neue. Segue provisória, aguardando outra sugestão de fonte
+- [x] Reformulação completa da landing page seguindo prompt/mockup enviado
+      pelo cliente (estrutura tipo "página que já é o site/cardápio"):
+      Header com nav completa + WhatsApp (scroll shrink), Hero com dois
+      CTAs, Benefícios (4 itens), "Mais que um hambúrguer" (5 diferenciais),
+      Destaques do cardápio (dados reais Supabase), CTA intermediário,
+      Delivery, Depoimentos (placeholder — sem inventar avaliação real),
+      Galeria (só fotos reais que temos + placeholders marcados pros
+      slots sem foto), "Siga a gente", Footer completo (nav/contato/
+      horário/copyright), CTA final, botão WhatsApp flutuante (desktop)
+      + "Pedir agora" fixo (mobile, reintroduzido a pedido do cliente).
+      Mantido preto e branco em vez do laranja/dourado do prompt original
+      (decisão explícita do cliente). PENDÊNCIA: Hero ainda não tem a
+      foto grande do hambúrguer isolado que o prompt pede — falta uma
+      foto de produto sem texto embutido; WhatsApp segue placeholder
+      (botão flutuante aponta pro rodapé por enquanto, trocar por
+      wa.me/<numero> quando tiver o número real)
 - [x] Seção "Delivery sem taxa de entrega" logo após o Hero — virou um
       banner promocional pronto (mapa de SJC com zonas de entrega,
       enviado pelo cliente), clicável (link pra `/cardapio`) com animação
