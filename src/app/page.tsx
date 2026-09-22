@@ -8,6 +8,7 @@ import { Localizacao } from "@/components/Localizacao";
 import { FachadaParallax } from "@/components/FachadaParallax";
 import { BannerParallax } from "@/components/BannerParallax";
 import { Contato } from "@/components/Contato";
+import { Rodape } from "@/components/Rodape";
 
 export default function Home() {
   return (
@@ -34,6 +35,7 @@ export default function Home() {
         />
         <Contato />
       </main>
+      <Rodape />
     </>
   );
 }
