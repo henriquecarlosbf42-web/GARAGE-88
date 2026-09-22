@@ -13,7 +13,10 @@ export function Localizacao() {
             <h3 className="text-sm font-semibold uppercase tracking-widest text-accent-2">
               Endereço
             </h3>
-            <p className="mt-2 text-muted">[PLACEHOLDER: endereço completo]</p>
+            <p className="mt-2 text-muted">
+              Av. Rui Barbosa, 1234 — Santana, São José dos Campos - SP,
+              12211-105
+            </p>
           </div>
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-widest text-accent-2">

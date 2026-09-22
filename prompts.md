@@ -65,6 +65,17 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [x] Preencher `.env.local` com URL + anon key do projeto Supabase real
 - [x] Rodar `supabase/schema.sql` no projeto Supabase (tabela confirmada via API)
 - [x] Criar usuário da equipe em Authentication → Users no Supabase (login testado com sucesso)
+- [x] Endereço real da loja: Av. Rui Barbosa, 1234 — Santana, São José dos
+      Campos - SP, 12211-105 (atualizado no site)
+- [x] Cálculo real de rota pro motoboy (`/api/rota`): geocodifica endereços
+      sem GPS via Nominatim/OpenStreetMap (gratuito) e ordena as paradas
+      pelo algoritmo do vizinho mais próximo a partir da loja, antes de
+      abrir o Google Maps — não depende de conta paga do Google Cloud.
+      Coordenada da loja está fixa em `src/lib/rota.ts` (aproximada, o
+      OSM não tem o número exato mapeado)
+- [x] Corrigido bug do scanner de QR: erro de câmera (permissão negada,
+      sem câmera, etc.) fechava a tela silenciosamente sem avisar nada —
+      agora mostra a mensagem de erro real
 - [x] Localização GPS opcional em `/pedir` (Geolocation API do navegador,
       captura uma vez ao fazer o pedido — não é tracking ao vivo). Quando
       informada, o painel/motoboy usa a coordenada em vez do endereço

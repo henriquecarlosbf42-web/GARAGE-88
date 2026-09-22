@@ -33,7 +33,7 @@ escolhe a dedo.
 
 ## Localização e horário
 
-**Endereço:** [PLACEHOLDER]
+**Endereço:** Av. Rui Barbosa, 1234 — Santana, São José dos Campos - SP, 12211-105
 **Horário de funcionamento:** Quinta a domingo, das 18h30 às 23h30
 **Como chegar / estacionamento:** [PLACEHOLDER, se aplicável]
 

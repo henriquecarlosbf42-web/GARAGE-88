@@ -26,6 +26,7 @@ export function MotoboyView({
   const [copiadoId, setCopiadoId] = useState<string | null>(null);
   const [scannerAberto, setScannerAberto] = useState(false);
   const [aviso, setAviso] = useState<Aviso | null>(null);
+  const [montandoRota, setMontandoRota] = useState(false);
 
   useEffect(() => {
     setOrigin(window.location.origin);
@@ -108,13 +109,25 @@ export function MotoboyView({
     await supabase.from("pedidos").update({ motoboy_id: null }).eq("id", id);
   }
 
-  async function abrirRotaESair() {
+  async function montarRota() {
     const ids = filaAtual.map((p) => p.id);
     if (ids.length === 0) return;
 
-    const enderecos = filaAtual
-      .map((p) => destinoMapa(p))
-      .filter((e): e is string => Boolean(e && e.trim()));
+    setMontandoRota(true);
+
+    const res = await fetch("/api/rota", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids }),
+    });
+    const dados = await res.json();
+
+    setMontandoRota(false);
+
+    if (!res.ok) {
+      setAviso({ tipo: "erro", texto: dados.erro ?? "Não deu pra montar a rota." });
+      return;
+    }
 
     setPedidos((prev) =>
       prev.map((p) =>
@@ -128,10 +141,7 @@ export function MotoboyView({
       .update({ status: "saiu_para_entrega" })
       .in("id", ids);
 
-    if (enderecos.length > 0) {
-      const url = linkRotaGoogleMaps(enderecos);
-      if (url) window.open(url, "_blank");
-    }
+    window.open(dados.url, "_blank");
   }
 
   async function marcarEntregue(id: string) {
@@ -194,10 +204,11 @@ export function MotoboyView({
           </h2>
           {filaAtual.length > 0 && (
             <button
-              onClick={abrirRotaESair}
-              className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-background transition hover:bg-accent-2"
+              onClick={montarRota}
+              disabled={montandoRota}
+              className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-background transition hover:bg-accent-2 disabled:opacity-60"
             >
-              Abrir rota e sair pra entrega
+              {montandoRota ? "Calculando melhor rota..." : "Montar rota"}
             </button>
           )}
         </div>
