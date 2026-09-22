@@ -3,12 +3,14 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
-export function FotoTopo({
+export function FotoRecorteParallax({
   imagemUrl,
   alt,
+  prioridade = false,
 }: {
   imagemUrl: string;
   alt: string;
+  prioridade?: boolean;
 }) {
   const fotoRef = useRef<HTMLDivElement>(null);
 
@@ -17,7 +19,9 @@ export function FotoTopo({
 
     function aplicarParallax() {
       if (fotoRef.current) {
-        const deslocamento = window.scrollY * 0.15;
+        const secao = fotoRef.current.closest("section");
+        const topo = secao?.getBoundingClientRect().top ?? 0;
+        const deslocamento = topo * -0.15;
         fotoRef.current.style.transform = `translateY(${deslocamento}px)`;
       }
       ticking = false;
@@ -38,15 +42,12 @@ export function FotoTopo({
   return (
     <section className="relative w-full overflow-hidden bg-surface">
       <div className="relative mx-auto aspect-square w-full max-w-3xl sm:max-w-4xl">
-        <div
-          ref={fotoRef}
-          className="absolute inset-0 will-change-transform"
-        >
+        <div ref={fotoRef} className="absolute inset-0 will-change-transform">
           <Image
             src={imagemUrl}
             alt={alt}
             fill
-            priority
+            priority={prioridade}
             className="object-contain"
           />
         </div>

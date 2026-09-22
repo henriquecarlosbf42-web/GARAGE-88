@@ -65,6 +65,13 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [x] Preencher `.env.local` com URL + anon key do projeto Supabase real
 - [x] Rodar `supabase/schema.sql` no projeto Supabase (tabela confirmada via API)
 - [x] Criar usuário da equipe em Authentication → Users no Supabase (login testado com sucesso)
+- [x] Jornada parallax de página inteira: foto do casal (topo) → Hero →
+      foto do lanche carro-chefe (parallax) → Cardápio/Sobre/Localização →
+      foto real da fachada à noite com fusca (parallax, fundo cheio) →
+      Contato. Componente da foto recortada generalizado
+      (`FotoRecorteParallax.tsx`) pra reusar no casal e no lanche; fachada
+      tem componente próprio (`FachadaParallax.tsx`, fundo cobrindo a
+      seção em vez de foto recortada). Assets em `public/images/`
 - [x] Faixa decorativa pixelada (azul/vermelho/branco, feita só com CSS,
       sem imagem/personagem de jogo nenhum) logo abaixo da foto do topo —
       detalhe pontual "retro/8-bit", sem mudar a identidade P&B do resto
