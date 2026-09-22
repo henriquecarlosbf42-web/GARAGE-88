@@ -65,8 +65,13 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [x] Preencher `.env.local` com URL + anon key do projeto Supabase real
 - [x] Rodar `supabase/schema.sql` no projeto Supabase (tabela confirmada via API)
 - [x] Criar usuário da equipe em Authentication → Users no Supabase (login testado com sucesso)
-- [ ] Definir fluxo real de "Pedir agora" (form próprio vs. integração
-      delivery/WhatsApp) — hoje é só um placeholder de CTA
+- [x] "Pedir agora" funcional: `/pedir` — cadastro rápido (nome + WhatsApp,
+      salvo no navegador, sem senha/login de verdade), monta carrinho com
+      os produtos cadastrados no painel, finaliza e cai direto na página
+      de rastreio (`/pedido/[id]`). Testado ponta a ponta via API.
+      Convite "Siga no Instagram @garage88.ne" aparece na página de
+      rastreio (não achamos como oferecer login com Instagram — a Meta
+      descontinuou pra apps pequenos)
 - [x] Pedido fictício criado no banco pra teste (visível no painel)
 - [x] Papéis separados: admin (cozinha/gestão, painel `/painel`) vs motoboy
       (painel `/painel/motoboy`) — motoboy só vê pedidos "em preparo" sem

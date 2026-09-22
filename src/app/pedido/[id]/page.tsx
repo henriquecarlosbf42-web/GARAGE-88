@@ -106,7 +106,21 @@ export default function RastreioPedidoPage() {
         </ol>
       )}
 
-      <p className="mt-10 text-xs text-muted">
+      <a
+        href="https://www.instagram.com/garage88.ne/"
+        target="_blank"
+        rel="noreferrer"
+        className="mt-10 flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-surface p-4"
+      >
+        <span>
+          Acompanha a Garage 88 no Instagram <strong>@garage88.ne</strong>
+        </span>
+        <span className="rounded-full bg-accent px-4 py-2 text-xs font-semibold text-background">
+          Seguir
+        </span>
+      </a>
+
+      <p className="mt-6 text-xs text-muted">
         Essa página atualiza sozinha a cada 10 segundos.
       </p>
     </main>

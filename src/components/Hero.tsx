@@ -20,7 +20,7 @@ export function Hero() {
             Ver cardápio
           </a>
           <a
-            href="#pedir"
+            href="/pedir"
             className="rounded-full bg-accent px-6 py-3 text-sm font-semibold text-background transition hover:bg-accent-2"
           >
             Pedir agora
