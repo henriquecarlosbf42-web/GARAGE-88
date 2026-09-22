@@ -11,6 +11,8 @@ export type Pedido = {
   taxa_entrega: number | null;
   forma_pagamento: string | null;
   motoboy_id: string | null;
+  latitude: number | null;
+  longitude: number | null;
   created_at: string;
 };
 
@@ -40,6 +42,13 @@ function normalizarTelefone(telefone: string) {
   const digitos = telefone.replace(/\D/g, "");
   if (digitos.startsWith("55")) return digitos;
   return `55${digitos}`;
+}
+
+export function destinoMapa(pedido: Pedido): string | null {
+  if (pedido.latitude != null && pedido.longitude != null) {
+    return `${pedido.latitude},${pedido.longitude}`;
+  }
+  return pedido.endereco_entrega;
 }
 
 export function linkRastreio(pedido: Pedido, origin: string) {

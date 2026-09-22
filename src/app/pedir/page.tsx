@@ -20,6 +20,9 @@ export default function PedirPage() {
   const [formaPagamento, setFormaPagamento] = useState("dinheiro");
   const [enviando, setEnviando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
+  const [localizacao, setLocalizacao] = useState<{ lat: number; lng: number } | null>(null);
+  const [buscandoLocalizacao, setBuscandoLocalizacao] = useState(false);
+  const [erroLocalizacao, setErroLocalizacao] = useState<string | null>(null);
 
   useEffect(() => {
     setCliente(lerClienteLocal());
@@ -56,6 +59,34 @@ export default function PedirPage() {
 
     salvarClienteLocal(novoCliente);
     setCliente(novoCliente);
+  }
+
+  function capturarLocalizacao() {
+    if (!navigator.geolocation) {
+      setErroLocalizacao("Seu navegador não suporta localização.");
+      return;
+    }
+    setBuscandoLocalizacao(true);
+    setErroLocalizacao(null);
+
+    navigator.geolocation.getCurrentPosition(
+      (posicao) => {
+        setLocalizacao({
+          lat: posicao.coords.latitude,
+          lng: posicao.coords.longitude,
+        });
+        setBuscandoLocalizacao(false);
+      },
+      (erro) => {
+        setBuscandoLocalizacao(false);
+        setErroLocalizacao(
+          erro.code === erro.PERMISSION_DENIED
+            ? "Permissão de localização negada."
+            : "Não deu pra pegar sua localização.",
+        );
+      },
+      { enableHighAccuracy: true, timeout: 10_000 },
+    );
   }
 
   function alterarQuantidade(produtoId: string, delta: number) {
@@ -102,6 +133,8 @@ export default function PedirPage() {
       valor_total: totalPedido || null,
       forma_pagamento: formaPagamento,
       origem: "site",
+      latitude: localizacao?.lat ?? null,
+      longitude: localizacao?.lng ?? null,
     });
 
     setEnviando(false);
@@ -158,6 +191,30 @@ export default function PedirPage() {
               className="mt-1 w-full rounded-lg border border-white/10 bg-background px-3 py-2 text-foreground outline-none focus:border-accent"
             />
           </label>
+
+          <div>
+            <button
+              type="button"
+              onClick={capturarLocalizacao}
+              disabled={buscandoLocalizacao}
+              className="rounded-full border border-white/20 px-4 py-2 text-sm transition hover:border-white/40 disabled:opacity-60"
+            >
+              {buscandoLocalizacao
+                ? "Buscando localização..."
+                : localizacao
+                  ? "📍 Localização capturada ✓"
+                  : "📍 Usar minha localização (opcional)"}
+            </button>
+            {erroLocalizacao && (
+              <p className="mt-2 text-xs text-red-400">{erroLocalizacao}</p>
+            )}
+            {localizacao && (
+              <p className="mt-2 text-xs text-muted">
+                Isso ajuda o motoboy a chegar certinho, mesmo sem endereço.
+              </p>
+            )}
+          </div>
+
           <button
             type="submit"
             className="mt-2 rounded-full bg-accent px-6 py-3 font-semibold text-background transition hover:bg-accent-2"

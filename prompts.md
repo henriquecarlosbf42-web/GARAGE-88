@@ -65,6 +65,10 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [x] Preencher `.env.local` com URL + anon key do projeto Supabase real
 - [x] Rodar `supabase/schema.sql` no projeto Supabase (tabela confirmada via API)
 - [x] Criar usuário da equipe em Authentication → Users no Supabase (login testado com sucesso)
+- [x] Localização GPS opcional em `/pedir` (Geolocation API do navegador,
+      captura uma vez ao fazer o pedido — não é tracking ao vivo). Quando
+      informada, o painel/motoboy usa a coordenada em vez do endereço
+      digitado pra montar a rota no Google Maps (mais preciso)
 - [x] "Pedir agora" funcional: `/pedir` — cadastro rápido (nome + WhatsApp,
       salvo no navegador, sem senha/login de verdade), monta carrinho com
       os produtos cadastrados no painel, finaliza e cai direto na página

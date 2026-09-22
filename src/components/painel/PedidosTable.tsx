@@ -7,6 +7,7 @@ import {
   type Pedido,
   STATUS_OPCOES,
   STATUS_LABEL,
+  destinoMapa,
   linkRastreio,
   linkWhatsapp,
   linkRotaGoogleMaps,
@@ -76,7 +77,7 @@ export function PedidosTable({ pedidosIniciais }: { pedidosIniciais: Pedido[] })
 
   function abrirRota() {
     const enderecos = pedidosSelecionados
-      .map((p) => p.endereco_entrega)
+      .map((p) => destinoMapa(p))
       .filter((e): e is string => Boolean(e && e.trim()));
 
     if (enderecos.length === 0) {
@@ -161,6 +162,9 @@ export function PedidosTable({ pedidosIniciais }: { pedidosIniciais: Pedido[] })
                   </td>
                   <td className="py-3 pr-4 max-w-[200px] text-xs text-muted">
                     {pedido.endereco_entrega || "—"}
+                    {pedido.latitude != null && (
+                      <span className="ml-1 text-accent-2">📍 GPS</span>
+                    )}
                   </td>
                   <td className="py-3 pr-4">
                     {pedido.valor_total ? `R$ ${pedido.valor_total.toFixed(2)}` : "—"}

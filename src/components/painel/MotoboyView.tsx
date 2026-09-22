@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import {
   type Pedido,
   FORMA_PAGAMENTO_LABEL,
+  destinoMapa,
   linkRastreio,
   linkWhatsapp,
   linkRotaGoogleMaps,
@@ -112,7 +113,7 @@ export function MotoboyView({
     if (ids.length === 0) return;
 
     const enderecos = filaAtual
-      .map((p) => p.endereco_entrega)
+      .map((p) => destinoMapa(p))
       .filter((e): e is string => Boolean(e && e.trim()));
 
     setPedidos((prev) =>
@@ -215,9 +216,7 @@ export function MotoboyView({
                 <div>
                   <div className="font-semibold">{pedido.cliente_nome}</div>
                   <div className="text-sm text-muted">{pedido.itens}</div>
-                  <div className="text-sm text-muted">
-                    {pedido.endereco_entrega || "Endereço não informado"}
-                  </div>
+                  <EnderecoLinha pedido={pedido} />
                   {pedido.forma_pagamento && (
                     <div className="text-sm text-muted">
                       Pagamento: {FORMA_PAGAMENTO_LABEL[pedido.forma_pagamento] ?? pedido.forma_pagamento}
@@ -269,9 +268,7 @@ export function MotoboyView({
                     <div>
                       <div className="font-semibold">{pedido.cliente_nome}</div>
                       <div className="text-sm text-muted">{pedido.itens}</div>
-                      <div className="text-sm text-muted">
-                        {pedido.endereco_entrega || "Endereço não informado"}
-                      </div>
+                      <EnderecoLinha pedido={pedido} />
                     </div>
                     <div className="text-right text-sm">
                       <div className="font-semibold text-accent-2">
@@ -294,9 +291,9 @@ export function MotoboyView({
                         Marcar entregue
                       </button>
                     )}
-                    {pedido.endereco_entrega && (
+                    {destinoMapa(pedido) && (
                       <a
-                        href={linkRotaGoogleMaps([pedido.endereco_entrega]) ?? "#"}
+                        href={linkRotaGoogleMaps([destinoMapa(pedido)!]) ?? "#"}
                         target="_blank"
                         rel="noreferrer"
                         className="rounded-full border border-white/20 px-3 py-1 text-xs transition hover:border-white/40"
@@ -327,6 +324,16 @@ export function MotoboyView({
           </div>
         )}
       </section>
+    </div>
+  );
+}
+
+function EnderecoLinha({ pedido }: { pedido: Pedido }) {
+  const temGps = pedido.latitude != null && pedido.longitude != null;
+  return (
+    <div className="text-sm text-muted">
+      {pedido.endereco_entrega || (temGps ? "Localização compartilhada" : "Endereço não informado")}
+      {temGps && <span className="ml-1 text-accent-2">📍 GPS</span>}
     </div>
   );
 }
