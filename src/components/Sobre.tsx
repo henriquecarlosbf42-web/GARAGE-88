@@ -3,7 +3,7 @@ export function Sobre() {
     <section id="sobre" className="mx-auto max-w-5xl px-6 py-16 text-center">
       <div className="mx-auto max-w-2xl">
         <h2 className="font-heading text-4xl uppercase tracking-wide sm:text-5xl">
-          Sobre
+          Conhecendo o Garage88
         </h2>
         <p className="mt-4 text-muted">
           Na Garage 88, hambúrguer não é fast-food — é processo. Pão, carne

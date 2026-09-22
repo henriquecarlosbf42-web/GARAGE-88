@@ -68,6 +68,12 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [~] Fonte dos títulos: testamos Cinzel Decorative (Google Fonts, mais
       elegante/clássica), cliente não gostou do resultado — voltou pra
       Bebas Neue. Segue provisória, aguardando outra sugestão de fonte
+- [x] Seção "Delivery sem taxa de entrega" logo após o Hero (destacando
+      que o estabelecimento não cobra taxa de entrega pro cliente — a
+      `taxa_entrega` que existe no banco é o pagamento interno pro
+      motoboy, nunca foi cobrada do cliente no checkout, então não
+      precisou mexer no cálculo)
+- [x] Seção "Sobre" renomeada pra "Conhecendo o Garage88"
 - [x] Botão discreto "Acessar Painel" no rodapé da home, linkando pra
       `/painel` (login)
 - [x] Cardápio removido de vez da home (nem o teaser de 3 produtos ficou)
