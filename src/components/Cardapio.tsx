@@ -1,28 +1,20 @@
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import type { Categoria, Produto } from "@/lib/produtos";
+import type { Produto } from "@/lib/produtos";
 import { MenuItemCard } from "@/components/ui/menu-item-card";
 
 export async function Cardapio() {
   const supabase = await createClient();
 
-  const [{ data: categorias }, { data: produtos }] = await Promise.all([
-    supabase.from("categorias").select("*").order("ordem").returns<Categoria[]>(),
-    supabase
-      .from("produtos")
-      .select("*")
-      .eq("disponivel", true)
-      .order("ordem")
-      .returns<Produto[]>(),
-  ]);
+  const { data: produtos } = await supabase
+    .from("produtos")
+    .select("*")
+    .eq("disponivel", true)
+    .order("ordem")
+    .limit(3)
+    .returns<Produto[]>();
 
-  const temProdutos = (produtos?.length ?? 0) > 0;
-
-  const grupos = (categorias ?? []).map((categoria) => ({
-    categoria,
-    produtos: (produtos ?? []).filter((p) => p.categoria_id === categoria.id),
-  }));
-
-  const semCategoria = (produtos ?? []).filter((p) => !p.categoria_id);
+  const destaques = produtos ?? [];
 
   return (
     <section id="cardapio" className="border-t border-white/10 bg-surface">
@@ -35,50 +27,29 @@ export async function Cardapio() {
           que a gente escolhe a dedo.
         </p>
 
-        {!temProdutos && (
+        {destaques.length === 0 ? (
           <p className="mt-10 text-muted">Cardápio em atualização — volte em breve.</p>
+        ) : (
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {destaques.map((produto) => (
+              <MenuItemCard
+                key={produto.id}
+                imageUrl={produto.imagem_url}
+                name={produto.nome}
+                description={produto.ingredientes || produto.descricao}
+                price={produto.preco}
+                hrefPedir="/cardapio"
+              />
+            ))}
+          </div>
         )}
 
-        <div className="mt-10 flex flex-col gap-12">
-          {grupos
-            .filter((g) => g.produtos.length > 0)
-            .map(({ categoria, produtos }) => (
-              <div key={categoria.id}>
-                <h3 className="font-heading text-2xl uppercase tracking-wide text-accent-2">
-                  {categoria.nome}
-                </h3>
-                <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {produtos.map((produto) => (
-                    <MenuItemCard
-                      key={produto.id}
-                      imageUrl={produto.imagem_url}
-                      name={produto.nome}
-                      description={produto.ingredientes || produto.descricao}
-                      price={produto.preco}
-                      hrefPedir="/pedir"
-                    />
-                  ))}
-                </div>
-              </div>
-            ))}
-
-          {semCategoria.length > 0 && (
-            <div>
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {semCategoria.map((produto) => (
-                  <MenuItemCard
-                    key={produto.id}
-                    imageUrl={produto.imagem_url}
-                    name={produto.nome}
-                    description={produto.ingredientes || produto.descricao}
-                    price={produto.preco}
-                    hrefPedir="/pedir"
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+        <Link
+          href="/cardapio"
+          className="mt-10 inline-block rounded-full bg-accent px-8 py-3 font-semibold text-background transition hover:bg-accent-2"
+        >
+          Ver cardápio completo e pedir
+        </Link>
       </div>
     </section>
   );

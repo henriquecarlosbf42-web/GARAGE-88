@@ -65,10 +65,15 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
 - [x] Preencher `.env.local` com URL + anon key do projeto Supabase real
 - [x] Rodar `supabase/schema.sql` no projeto Supabase (tabela confirmada via API)
 - [x] Criar usuário da equipe em Authentication → Users no Supabase (login testado com sucesso)
-- [x] Fonte definitiva dos títulos: Cinzel Decorative (Google Fonts) —
-      trocou a Bebas Neue provisória. Mais elegante/clássica do que a
-      pegada "garagem industrial" anterior; cliente confirmou a troca
-      ciente da mudança de personalidade visual
+- [~] Fonte dos títulos: testamos Cinzel Decorative (Google Fonts, mais
+      elegante/clássica), cliente não gostou do resultado — voltou pra
+      Bebas Neue. Segue provisória, aguardando outra sugestão de fonte
+- [x] Cardápio isolado da home: `/pedir` virou `/cardapio` (redirect em
+      `/pedir` pra não quebrar link antigo). A home mostra só 3 produtos
+      em destaque + botão "Ver cardápio completo e pedir". Clicar num
+      produto na `/cardapio` já adiciona ao carrinho direto (borda/badge
+      de destaque), sem precisar do +/- pra selecionar — soma o total na
+      hora, "Remover" pra tirar
 - [x] Jornada parallax de página inteira: foto do casal (topo) → Hero →
       foto do lanche carro-chefe (parallax) → Cardápio/Sobre/Localização →
       foto real da fachada à noite com fusca (parallax, fundo cheio) →

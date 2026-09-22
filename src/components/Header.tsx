@@ -8,7 +8,7 @@ export function Header() {
           Garage 88
         </span>
         <nav className="hidden gap-6 text-sm text-muted sm:flex">
-          <Link href="#cardapio" className="hover:text-foreground">
+          <Link href="/cardapio" className="hover:text-foreground">
             Cardápio
           </Link>
           <Link href="#sobre" className="hover:text-foreground">
@@ -22,7 +22,7 @@ export function Header() {
           </Link>
         </nav>
         <Link
-          href="/pedir"
+          href="/cardapio"
           className="hidden rounded-full bg-accent px-4 py-2 text-sm font-semibold text-background transition hover:bg-accent-2 sm:inline-block"
         >
           Pedir agora

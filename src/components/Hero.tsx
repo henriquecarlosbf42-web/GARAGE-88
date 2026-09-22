@@ -14,7 +14,7 @@ export function Hero() {
         </p>
         <div className="mt-8 flex justify-center">
           <a
-            href="#cardapio"
+            href="/cardapio"
             className="inline-block rounded-full border border-white/20 px-6 py-3 text-sm font-semibold transition hover:border-white/40"
           >
             Ver cardápio
