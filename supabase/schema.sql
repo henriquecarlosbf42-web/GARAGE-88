@@ -88,6 +88,7 @@ alter table public.pedidos enable row level security;
 -- Qualquer visitante do site (anon) pode criar um pedido. Da equipe
 -- logada, só admin pode criar pedido manualmente (motoboy não deveria).
 drop policy if exists "Qualquer um pode criar pedido" on public.pedidos;
+drop policy if exists "Anon ou admin pode criar pedido" on public.pedidos;
 create policy "Anon ou admin pode criar pedido"
   on public.pedidos for insert
   to anon, authenticated

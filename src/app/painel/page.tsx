@@ -36,6 +36,12 @@ export default async function PainelPage() {
         </h1>
         <div className="flex items-center gap-3">
           <Link
+            href="/painel/equipe"
+            className="rounded-full border border-white/20 px-4 py-2 text-sm transition hover:border-white/40"
+          >
+            Equipe
+          </Link>
+          <Link
             href="/painel/novo"
             className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-background transition hover:bg-accent-2"
           >
