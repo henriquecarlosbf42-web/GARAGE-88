@@ -246,6 +246,24 @@ export default function PedirPage() {
       </div>
       <p className="mt-1 text-sm text-muted">Oi, {cliente.nome.split(" ")[0]}!</p>
 
+      <div className="mt-4">
+        <button
+          type="button"
+          onClick={capturarLocalizacao}
+          disabled={buscandoLocalizacao}
+          className="rounded-full border border-white/20 px-4 py-2 text-sm transition hover:border-white/40 disabled:opacity-60"
+        >
+          {buscandoLocalizacao
+            ? "Buscando localização..."
+            : localizacao
+              ? "📍 Localização capturada ✓"
+              : "📍 Usar minha localização (opcional)"}
+        </button>
+        {erroLocalizacao && (
+          <p className="mt-2 text-xs text-red-400">{erroLocalizacao}</p>
+        )}
+      </div>
+
       {produtos.length === 0 ? (
         <p className="mt-10 text-muted">Cardápio em atualização — volte em breve.</p>
       ) : (
