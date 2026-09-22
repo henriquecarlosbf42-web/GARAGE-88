@@ -13,6 +13,7 @@ create table if not exists public.pedidos (
     check (origem in ('site', 'whatsapp', 'delivery')),
   valor_total numeric(10, 2),
   taxa_entrega numeric(10, 2),
+  forma_pagamento text check (forma_pagamento in ('dinheiro', 'cartao', 'pix')),
   created_at timestamptz not null default now()
 );
 
@@ -21,6 +22,10 @@ create table if not exists public.pedidos (
 alter table public.pedidos add column if not exists endereco_entrega text;
 alter table public.pedidos add column if not exists taxa_entrega numeric(10, 2);
 alter table public.pedidos add column if not exists motoboy_id uuid references auth.users(id);
+alter table public.pedidos add column if not exists forma_pagamento text;
+alter table public.pedidos drop constraint if exists pedidos_forma_pagamento_check;
+alter table public.pedidos add constraint pedidos_forma_pagamento_check
+  check (forma_pagamento in ('dinheiro', 'cartao', 'pix'));
 
 -- Papel de cada usuário da equipe: 'admin' (cozinha/gestão, vê tudo) ou
 -- 'motoboy' (só vê pedidos prontos pra pegar ou que ele mesmo pegou).

@@ -74,6 +74,11 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
       Papel fica na tabela `profiles`, novo usuário nasce "admin" por
       padrão — pra virar motoboy, rodar depois de criar o login dele:
       `update public.profiles set role = 'motoboy' where id = '<uuid>';`
+- [x] Motoboy não escolhe de uma lista — escaneia o QR do ticket (câmera,
+      biblioteca html5-qrcode) pra pegar o pedido. Painel admin tem botão
+      "Ver QR" por pedido (gera QR com qrcode.react em `/painel/pedido/[id]/qr`,
+      pronto pra imprimir e colar no saco/ticket)
+- [x] Campo "forma de pagamento" (dinheiro/cartão/pix) no pedido
 - [~] IMPORTANTE (achado durante o teste): inserts feitos pelo `anon` (site
       público) precisam usar `Prefer: return=minimal` / não encadear
       `.select()` no supabase-js — pedir o registro de volta (`RETURNING`)

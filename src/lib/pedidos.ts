@@ -9,8 +9,15 @@ export type Pedido = {
   origem: string;
   valor_total: number | null;
   taxa_entrega: number | null;
+  forma_pagamento: string | null;
   motoboy_id: string | null;
   created_at: string;
+};
+
+export const FORMA_PAGAMENTO_LABEL: Record<string, string> = {
+  dinheiro: "Dinheiro",
+  cartao: "Cartão",
+  pix: "Pix",
 };
 
 export const STATUS_OPCOES = [

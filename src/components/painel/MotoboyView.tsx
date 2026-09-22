@@ -1,13 +1,17 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import {
   type Pedido,
+  FORMA_PAGAMENTO_LABEL,
   linkRastreio,
   linkWhatsapp,
   linkRotaGoogleMaps,
 } from "@/lib/pedidos";
+import { QrScanner } from "@/components/painel/QrScanner";
+
+type Aviso = { tipo: "sucesso" | "erro" | "info"; texto: string };
 
 export function MotoboyView({
   pedidosIniciais,
@@ -17,62 +21,110 @@ export function MotoboyView({
   userId: string;
 }) {
   const [pedidos, setPedidos] = useState(pedidosIniciais);
-  const [selecionados, setSelecionados] = useState<Set<string>>(new Set());
   const [origin, setOrigin] = useState("");
   const [copiadoId, setCopiadoId] = useState<string | null>(null);
+  const [scannerAberto, setScannerAberto] = useState(false);
+  const [aviso, setAviso] = useState<Aviso | null>(null);
 
   useEffect(() => {
     setOrigin(window.location.origin);
   }, []);
 
-  const disponiveis = useMemo(
-    () => pedidos.filter((p) => !p.motoboy_id && p.status === "em_preparo"),
-    [pedidos],
-  );
+  useEffect(() => {
+    if (!aviso) return;
+    const t = setTimeout(() => setAviso(null), 4000);
+    return () => clearTimeout(t);
+  }, [aviso]);
 
-  const minhasEntregas = useMemo(
-    () =>
-      pedidos
-        .filter((p) => p.motoboy_id === userId)
-        .sort((a, b) => (a.status === "concluido" ? 1 : -1)),
-    [pedidos, userId],
+  const filaAtual = pedidos.filter(
+    (p) => p.motoboy_id === userId && p.status === "em_preparo",
   );
+  const minhasEntregas = pedidos
+    .filter(
+      (p) =>
+        p.motoboy_id === userId &&
+        (p.status === "saiu_para_entrega" || p.status === "concluido"),
+    )
+    .sort((a, b) => (a.status === "concluido" ? 1 : -1));
 
   const ganhoTotal = minhasEntregas
     .filter((p) => p.status !== "cancelado")
     .reduce((soma, p) => soma + (p.taxa_entrega ?? 0), 0);
 
-  function alternarSelecao(id: string) {
-    setSelecionados((prev) => {
-      const novo = new Set(prev);
-      if (novo.has(id)) novo.delete(id);
-      else novo.add(id);
-      return novo;
+  async function handleScan(pedidoId: string) {
+    const jaNaFila = pedidos.some((p) => p.id === pedidoId && p.motoboy_id === userId);
+    if (jaNaFila) {
+      setAviso({ tipo: "info", texto: "Você já pegou esse pedido." });
+      return;
+    }
+
+    const supabase = createClient();
+    const { data: pedido, error: erroBusca } = await supabase
+      .from("pedidos")
+      .select("*")
+      .eq("id", pedidoId)
+      .maybeSingle<Pedido>();
+
+    if (erroBusca || !pedido) {
+      setAviso({
+        tipo: "erro",
+        texto: "Pedido não encontrado ou já foi pego por outro motoboy.",
+      });
+      return;
+    }
+
+    const { data: claimado, error: erroClaim } = await supabase
+      .from("pedidos")
+      .update({ motoboy_id: userId })
+      .eq("id", pedidoId)
+      .is("motoboy_id", null)
+      .select()
+      .maybeSingle();
+
+    if (erroClaim || !claimado) {
+      setAviso({
+        tipo: "erro",
+        texto: "Esse pedido já foi pego por outro motoboy nesse instante.",
+      });
+      return;
+    }
+
+    setPedidos((prev) => {
+      const existe = prev.some((p) => p.id === pedido.id);
+      const atualizado = { ...pedido, motoboy_id: userId };
+      return existe
+        ? prev.map((p) => (p.id === pedido.id ? atualizado : p))
+        : [...prev, atualizado];
     });
+    setAviso({ tipo: "sucesso", texto: `Pedido de ${pedido.cliente_nome} adicionado.` });
   }
 
-  async function pegarEAbrirRota() {
-    const ids = Array.from(selecionados);
+  async function removerDaFila(id: string) {
+    setPedidos((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, motoboy_id: null } : p)),
+    );
+    const supabase = createClient();
+    await supabase.from("pedidos").update({ motoboy_id: null }).eq("id", id);
+  }
+
+  async function abrirRotaESair() {
+    const ids = filaAtual.map((p) => p.id);
     if (ids.length === 0) return;
 
-    const enderecos = pedidos
-      .filter((p) => ids.includes(p.id))
+    const enderecos = filaAtual
       .map((p) => p.endereco_entrega)
       .filter((e): e is string => Boolean(e && e.trim()));
 
     setPedidos((prev) =>
       prev.map((p) =>
-        ids.includes(p.id)
-          ? { ...p, motoboy_id: userId, status: "saiu_para_entrega" }
-          : p,
+        ids.includes(p.id) ? { ...p, status: "saiu_para_entrega" } : p,
       ),
     );
-    setSelecionados(new Set());
 
     const supabase = createClient();
     await supabase
       .from("pedidos")
-      .update({ motoboy_id: userId, status: "saiu_para_entrega" })
+      .update({ status: "saiu_para_entrega" })
       .in("id", ids);
 
     if (enderecos.length > 0) {
@@ -85,7 +137,6 @@ export function MotoboyView({
     setPedidos((prev) =>
       prev.map((p) => (p.id === id ? { ...p, status: "concluido" } : p)),
     );
-
     const supabase = createClient();
     await supabase.from("pedidos").update({ status: "concluido" }).eq("id", id);
   }
@@ -99,51 +150,92 @@ export function MotoboyView({
 
   return (
     <div className="mt-8 flex flex-col gap-10">
+      {aviso && (
+        <div
+          className={`rounded-xl border p-4 text-sm ${
+            aviso.tipo === "sucesso"
+              ? "border-accent/40 bg-accent/10"
+              : aviso.tipo === "erro"
+                ? "border-red-500/40 bg-red-500/10 text-red-300"
+                : "border-white/10 bg-surface"
+          }`}
+        >
+          {aviso.texto}
+        </div>
+      )}
+
+      <section>
+        <button
+          onClick={() => setScannerAberto(true)}
+          className="flex w-full flex-col items-center gap-3 rounded-2xl border-2 border-dashed border-white/20 py-10 text-center transition hover:border-accent"
+        >
+          <span className="text-4xl">📷</span>
+          <span className="font-heading text-xl uppercase tracking-wide">
+            Escanear pedido
+          </span>
+          <span className="text-sm text-muted">
+            Aponta a câmera pro QR do ticket na cozinha
+          </span>
+        </button>
+      </section>
+
+      {scannerAberto && (
+        <QrScanner
+          onScan={handleScan}
+          onFechar={() => setScannerAberto(false)}
+        />
+      )}
+
       <section>
         <div className="flex items-center justify-between">
           <h2 className="font-heading text-2xl uppercase tracking-wide">
-            Disponíveis pra pegar
+            Minha fila
           </h2>
-          {selecionados.size > 0 && (
+          {filaAtual.length > 0 && (
             <button
-              onClick={pegarEAbrirRota}
+              onClick={abrirRotaESair}
               className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-background transition hover:bg-accent-2"
             >
-              Pegar {selecionados.size} e abrir rota
+              Abrir rota e sair pra entrega
             </button>
           )}
         </div>
 
-        {disponiveis.length === 0 ? (
-          <p className="mt-4 text-muted">Nenhum pedido pronto pra pegar agora.</p>
+        {filaAtual.length === 0 ? (
+          <p className="mt-4 text-muted">
+            Nenhum pedido escaneado ainda. Escaneie os tickets que for pegar.
+          </p>
         ) : (
           <div className="mt-4 flex flex-col gap-3">
-            {disponiveis.map((pedido) => (
-              <label
+            {filaAtual.map((pedido) => (
+              <div
                 key={pedido.id}
-                className="flex cursor-pointer items-start gap-3 rounded-xl border border-white/10 bg-surface p-4"
+                className="flex flex-wrap items-start justify-between gap-3 rounded-xl border border-white/10 bg-surface p-4"
               >
-                <input
-                  type="checkbox"
-                  className="mt-1"
-                  checked={selecionados.has(pedido.id)}
-                  onChange={() => alternarSelecao(pedido.id)}
-                />
-                <div className="flex-1">
+                <div>
                   <div className="font-semibold">{pedido.cliente_nome}</div>
                   <div className="text-sm text-muted">{pedido.itens}</div>
                   <div className="text-sm text-muted">
                     {pedido.endereco_entrega || "Endereço não informado"}
                   </div>
+                  {pedido.forma_pagamento && (
+                    <div className="text-sm text-muted">
+                      Pagamento: {FORMA_PAGAMENTO_LABEL[pedido.forma_pagamento] ?? pedido.forma_pagamento}
+                    </div>
+                  )}
                 </div>
-                <div className="text-right text-sm">
-                  <div className="font-semibold text-accent-2">
-                    {pedido.taxa_entrega
-                      ? `R$ ${pedido.taxa_entrega.toFixed(2)}`
-                      : "—"}
-                  </div>
+                <div className="flex flex-col items-end gap-2">
+                  <span className="font-semibold text-accent-2">
+                    {pedido.taxa_entrega ? `R$ ${pedido.taxa_entrega.toFixed(2)}` : "—"}
+                  </span>
+                  <button
+                    onClick={() => removerDaFila(pedido.id)}
+                    className="text-xs text-muted underline hover:text-foreground"
+                  >
+                    Remover
+                  </button>
                 </div>
-              </label>
+              </div>
             ))}
           </div>
         )}
@@ -160,7 +252,7 @@ export function MotoboyView({
         </div>
 
         {minhasEntregas.length === 0 ? (
-          <p className="mt-4 text-muted">Você ainda não pegou nenhuma entrega.</p>
+          <p className="mt-4 text-muted">Você ainda não saiu pra nenhuma entrega.</p>
         ) : (
           <div className="mt-4 flex flex-col gap-3">
             {minhasEntregas.map((pedido) => {

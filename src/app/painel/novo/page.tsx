@@ -25,6 +25,7 @@ export default function NovoPedidoPage() {
       observacoes: form.get("observacoes") || null,
       valor_total: form.get("valor_total") || null,
       taxa_entrega: form.get("taxa_entrega") || null,
+      forma_pagamento: form.get("forma_pagamento") || null,
       origem: form.get("origem"),
     });
 
@@ -78,18 +79,33 @@ export default function NovoPedidoPage() {
             step="0.01"
           />
         </div>
-        <label className="text-sm text-muted">
-          Origem
-          <select
-            name="origem"
-            defaultValue="whatsapp"
-            className="mt-1 w-full rounded-lg border border-white/10 bg-background px-3 py-2 text-foreground outline-none focus:border-accent"
-          >
-            <option value="whatsapp">WhatsApp</option>
-            <option value="site">Site</option>
-            <option value="delivery">Delivery</option>
-          </select>
-        </label>
+        <div className="grid grid-cols-2 gap-4">
+          <label className="text-sm text-muted">
+            Origem
+            <select
+              name="origem"
+              defaultValue="whatsapp"
+              className="mt-1 w-full rounded-lg border border-white/10 bg-background px-3 py-2 text-foreground outline-none focus:border-accent"
+            >
+              <option value="whatsapp">WhatsApp</option>
+              <option value="site">Site</option>
+              <option value="delivery">Delivery</option>
+            </select>
+          </label>
+          <label className="text-sm text-muted">
+            Forma de pagamento
+            <select
+              name="forma_pagamento"
+              defaultValue=""
+              className="mt-1 w-full rounded-lg border border-white/10 bg-background px-3 py-2 text-foreground outline-none focus:border-accent"
+            >
+              <option value="">Não definida</option>
+              <option value="dinheiro">Dinheiro</option>
+              <option value="cartao">Cartão</option>
+              <option value="pix">Pix</option>
+            </select>
+          </label>
+        </div>
 
         {erro && <p className="text-sm text-red-400">{erro}</p>}
 

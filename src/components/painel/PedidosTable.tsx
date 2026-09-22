@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import {
@@ -115,7 +116,7 @@ export function PedidosTable({ pedidosIniciais }: { pedidosIniciais: Pedido[] })
       )}
 
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[960px] text-left text-sm">
+        <table className="w-full min-w-[1080px] text-left text-sm">
           <thead className="text-muted">
             <tr className="border-b border-white/10">
               <th className="py-3 pr-4"></th>
@@ -127,6 +128,7 @@ export function PedidosTable({ pedidosIniciais }: { pedidosIniciais: Pedido[] })
               <th className="py-3 pr-4">Status</th>
               <th className="py-3 pr-4">Avisar</th>
               <th className="py-3 pr-4">Rastreio</th>
+              <th className="py-3 pr-4">Ticket</th>
             </tr>
           </thead>
           <tbody>
@@ -200,6 +202,15 @@ export function PedidosTable({ pedidosIniciais }: { pedidosIniciais: Pedido[] })
                     >
                       {copiadoId === pedido.id ? "Copiado!" : "Copiar link"}
                     </button>
+                  </td>
+                  <td className="py-3 pr-4">
+                    <Link
+                      href={`/painel/pedido/${pedido.id}/qr`}
+                      target="_blank"
+                      className="rounded-full border border-white/20 px-3 py-1 text-xs transition hover:border-white/40"
+                    >
+                      Ver QR
+                    </Link>
                   </td>
                 </tr>
               );
