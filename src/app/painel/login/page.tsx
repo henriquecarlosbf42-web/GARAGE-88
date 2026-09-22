@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
@@ -34,7 +35,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex flex-1 items-center justify-center px-6 py-16">
+    <main className="flex flex-1 flex-col items-center justify-center px-6 py-16">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-sm rounded-2xl border border-white/10 bg-surface p-8"
@@ -78,6 +79,13 @@ export default function LoginPage() {
           {carregando ? "Entrando..." : "Entrar"}
         </button>
       </form>
+
+      <Link
+        href="/"
+        className="mt-6 text-sm text-muted underline-offset-4 hover:text-foreground hover:underline"
+      >
+        ← Voltar ao site
+      </Link>
     </main>
   );
 }
