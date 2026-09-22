@@ -38,7 +38,7 @@ export function BannerParallax({
 
   return (
     <section className="relative w-full overflow-hidden bg-surface">
-      <div className="relative mx-auto aspect-[1677/938] w-full">
+      <div className="relative mx-auto aspect-[1536/1024] w-full">
         <div ref={fotoRef} className="absolute inset-0 will-change-transform">
           <Image
             src={imagemUrl}
