@@ -73,7 +73,15 @@ limitado — pedir prints da bio, feed e 2-3 fotos representativas)
       que texto/botões ficam menores e mais difíceis de tocar sem zoom.
       `/cardapio` e `/painel` continuam responsivos normais (formulário,
       carrinho e scanner de QR precisam ficar tocáveis)
-- [x] Cards de produto (MenuItemCard, usado em "Destaques") com efeito de
+- [x] Seção "Destaques" virou um carrossel de cards empilhados e
+      arrastáveis (drag/inércia com `motion`), adaptado de um componente
+      de referência — trocadas as fotos de exemplo (paisagens) pelos
+      produtos reais do Supabase, preço como selo, botão "Pedir" no
+      card. Componentes novos: `components/ui/carousel-destaques.tsx`,
+      `components/ui/badge.tsx` (shadcn, cores ajustadas pra nossa
+      paleta P&B)
+- [x] Cards de produto (MenuItemCard, usado em "Destaques" antes do
+      carrossel — removido, sem uso depois da troca) com efeito de
       profundidade: a foto "flutua" pra fora do topo do card com sombra,
       em vez de ficar contida/cortada dentro dele
 - [x] Reformulação completa da landing page seguindo prompt/mockup enviado
