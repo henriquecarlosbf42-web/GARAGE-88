@@ -22,11 +22,11 @@ export default function Home() {
         />
         <Hero />
         <Delivery />
+        <Sobre />
         <BannerParallax
           imagemUrl="/images/burger-carro-chefe.png"
           alt="Maverick, o hambúrguer carro-chefe da Garage 88"
         />
-        <Sobre />
         <Eventos />
         <Localizacao />
         <FachadaParallax
